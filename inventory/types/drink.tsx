@@ -1,5 +1,5 @@
 export interface Drink{
-    category: string,
+    brand: string,
     name: string,
     quantity: number,
 }

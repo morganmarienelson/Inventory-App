@@ -2,7 +2,7 @@ import { InputNumber, Modal} from "antd";
 import React, { useState} from "react";
 import emailjs from 'emailjs-com';
 import {Drink} from "../types/drink";
-import styles from "./css/editingInventoryModal.module.css";
+import styles from "./css/modal.module.css";
 
 interface UpdateInventoryModalProps{
     showUpdateModal: boolean;

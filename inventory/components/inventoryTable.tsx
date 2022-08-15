@@ -1,15 +1,22 @@
 import 'antd/dist/antd.css';
-import {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Table, Typography } from 'antd';
-import {drinks} from "../data/drinks";
+import {pubDrinks} from "../data/pubDrinks";
+import {loungeDrinks} from "../data/loungeDrinks";
 import EditInventoryModal from "./editInventoryModal";
 import {Drink} from "../types/drink";
 
-const InventoryTable = () => {
+interface InventoryTableProps{
+    side: string;
+}
+
+
+const InventoryTable:React.FC<InventoryTableProps> = ({side}) => {
 const [showEditModal, setShowEditModal] = useState(false);
+const [data, setData] = useState(Array<Drink>());
 const [editingRecord, setEditingRecord] = useState({
     name: '',
-    category: '',
+    brand: '',
     quantity: 0,
 });
 
@@ -18,26 +25,41 @@ const edit = (record: Drink) => {
     setShowEditModal(true);
 };
 
+    useEffect(() => {
+        const showData = () => {
+            if (side == "pub"){
+                setData(pubDrinks)
+            } else if (side == "lounge"){
+                setData(loungeDrinks)
+            }
+        }
+        showData();
+    }, [side])
+
     const columns = [
         {
-            title: 'Category',
-            dataIndex: 'category',
+            title: 'Brand',
+            dataIndex: 'brand',
             width: '30%',
             filters: [
                 {
-                    text: 'Vodka',
-                    value: 'Vodka',
+                    text: 'General Beverage',
+                    value: 'General Beverage',
                 },
                 {
-                    text: 'Beer',
-                    value: 'Beer',
+                    text: 'Triangle Distributing',
+                    value: 'Triangle Distributing',
                 },
                 {
-                    text: 'Wine',
-                    value: 'Wine',
+                    text: 'Break Thru',
+                    value: 'Break Thru',
+                },
+                {
+                    text: 'Badger Liquor',
+                    value: 'Badger Liquor',
                 },
             ],
-            onFilter: (value, record) => record.category.includes(value),
+            onFilter: (value, record) => record.brand.includes(value),
             filterSearch: true,
         },
         {
@@ -49,7 +71,8 @@ const edit = (record: Drink) => {
             title: 'Quantity',
             dataIndex: 'quantity',
             width: '15%',
-            editable: true,
+            sort: 'descend',
+            sorter: (a, b) => a.quantity - b.quantity,
         },
         {
             title: 'Operation',
@@ -67,7 +90,7 @@ const edit = (record: Drink) => {
 return (
     <>
         <EditInventoryModal showUpdateModal={showEditModal} setShowUpdateModal={setShowEditModal} record={editingRecord} />
-        <Table columns={columns} dataSource={drinks} />
+        <Table columns={columns} dataSource={data} />
     </>
 );
 };

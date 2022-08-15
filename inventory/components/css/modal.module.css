@@ -16,3 +16,20 @@
     font-size: 20px;
     margin-right: 20px;
 }
+
+.form {
+    margin-left: 30px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 500;
+    align-content: center;
+    margin-bottom: 20px;
+}
+
+.submitBtn{
+    display: flex;
+    justify-content: end;
+    margin-top: 20px;
+}
