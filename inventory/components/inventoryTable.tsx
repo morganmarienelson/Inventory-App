@@ -5,6 +5,8 @@ import {pubDrinks} from "../data/pubDrinks";
 import {loungeDrinks} from "../data/loungeDrinks";
 import EditInventoryModal from "./editInventoryModal";
 import {Drink} from "../types/drink";
+import {Brands } from "../enums/brands";
+import {Sides} from "../enums/side";
 
 interface InventoryTableProps{
     side: string;
@@ -15,10 +17,10 @@ const InventoryTable:React.FC<InventoryTableProps> = ({side}) => {
 const [showEditModal, setShowEditModal] = useState(false);
 const [data, setData] = useState(Array<Drink>());
 const [editingRecord, setEditingRecord] = useState({
-    name: '',
     brand: '',
+    name: '',
     quantity: 0,
-});
+} as Drink);
 
 const edit = (record: Drink) => {
     setEditingRecord(record);
@@ -27,9 +29,9 @@ const edit = (record: Drink) => {
 
     useEffect(() => {
         const showData = () => {
-            if (side == "pub"){
+            if (side == Sides.pubSide){
                 setData(pubDrinks)
-            } else if (side == "lounge"){
+            } else if (side == Sides.loungeSide){
                 setData(loungeDrinks)
             }
         }
@@ -43,20 +45,20 @@ const edit = (record: Drink) => {
             width: '30%',
             filters: [
                 {
-                    text: 'General Beverage',
-                    value: 'General Beverage',
+                    text: Brands.generalBeverage,
+                    value: Brands.generalBeverage,
                 },
                 {
-                    text: 'Triangle Distributing',
-                    value: 'Triangle Distributing',
+                    text: Brands.triangleDistributing,
+                    value: Brands.triangleDistributing,
                 },
                 {
-                    text: 'Break Thru',
-                    value: 'Break Thru',
+                    text: Brands.breakThru,
+                    value: Brands.breakThru,
                 },
                 {
-                    text: 'Badger Liquor',
-                    value: 'Badger Liquor',
+                    text: Brands.badgerLiquor,
+                    value: -Brands.badgerLiquor,
                 },
             ],
             onFilter: (value, record) => record.brand.includes(value),

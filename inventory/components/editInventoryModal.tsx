@@ -35,12 +35,12 @@ const EditInventoryModal: React.FC<UpdateInventoryModalProps> = ({showUpdateModa
         if (quantity == 0){
             sendEmail();
         }
+        //TODO: update quantity in inventory database
         setShowUpdateModal(false);
     }
 
     const onCancel = () =>{
         setShowUpdateModal(false);
-
     }
 
     const onQuantityChange = (e) =>{
@@ -60,8 +60,6 @@ const EditInventoryModal: React.FC<UpdateInventoryModalProps> = ({showUpdateModa
             </div>
         </Modal>
         )
-
-
 }
 
 export default EditInventoryModal;

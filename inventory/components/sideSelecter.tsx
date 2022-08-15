@@ -2,6 +2,7 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import { Select } from 'antd';
 import styles from "./css/sideSelector.module.css"
+import {Sides} from "../enums/side";
 
 interface SideSelectorProps{
     setSide: (side: string) => void
@@ -26,8 +27,8 @@ const SideSelector:React.FC<SideSelectorProps> = ({setSide, setShowTable}) => {
                 }}
                 onChange={handleChange}
             >
-                <Option value="pub">Pub Side</Option>
-                <Option value="lounge">Lounge Side</Option>
+                <Option value={Sides.pubSide}>{Sides.pubSide}</Option>
+                <Option value={Sides.loungeSide}>{Sides.loungeSide}</Option>
             </Select>
         </div>
     );

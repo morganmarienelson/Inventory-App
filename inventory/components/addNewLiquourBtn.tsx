@@ -14,7 +14,7 @@ const AddNewLiquorBtn = () =>{
         <>
             <AddNewLiquorModal showAddModal={showAddModal} setShowAddModal={setShowAddModal}/>
         <Button onClick={onAddBtnClick} type="primary" className={styles.btn}>
-            <div  className={styles.label}  >Add New Liquor</div>
+            <div  className={styles.label}> Add New Liquor </div>
         </Button>
 </>
     )
