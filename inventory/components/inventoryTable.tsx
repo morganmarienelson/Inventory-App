@@ -1,6 +1,6 @@
 import 'antd/dist/antd.css';
 import React, {useEffect, useState} from "react";
-import { Table, Typography } from 'antd';
+import {Space, Table, Typography} from 'antd';
 import {pubDrinks} from "../data/pubDrinks";
 import {loungeDrinks} from "../data/loungeDrinks";
 import EditInventoryModal from "./editInventoryModal";
@@ -26,6 +26,10 @@ const edit = (record: Drink) => {
     setEditingRecord(record);
     setShowEditModal(true);
 };
+
+    const deleteRecord = (record: Drink) => {
+
+    };
 
     useEffect(() => {
         const showData = () => {
@@ -67,7 +71,7 @@ const edit = (record: Drink) => {
         {
             title: 'Name',
             dataIndex: 'name',
-            width: '45%',
+            width: '30%',
         },
         {
             title: 'Quantity',
@@ -81,9 +85,16 @@ const edit = (record: Drink) => {
             dataIndex: 'operation',
             render: (_, record) => {
                 return (
-                    <Typography.Link onClick={() => edit(record)}>
-                        Edit
-                    </Typography.Link>
+                    <>
+                    <Space size="middle">
+                        <Typography.Link onClick={() => edit(record)}>
+                            Restock
+                        </Typography.Link>
+                        <Typography.Link onClick={() => edit(record)}>
+                            Remove
+                        </Typography.Link>
+                    </Space>
+                    </>
                 )
             },
         },
