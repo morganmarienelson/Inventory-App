@@ -5,7 +5,7 @@ import {pubDrinks} from "../data/pubDrinks";
 import {loungeDrinks} from "../data/loungeDrinks";
 import EditInventoryModal from "./editInventoryModal";
 import {Drink} from "../types/drink";
-import {Brands } from "../enums/brands";
+import {Vendors } from "../enums/vendors";
 import {Sides} from "../enums/side";
 
 interface InventoryTableProps{
@@ -17,7 +17,7 @@ const InventoryTable:React.FC<InventoryTableProps> = ({side}) => {
 const [showEditModal, setShowEditModal] = useState(false);
 const [data, setData] = useState(Array<Drink>());
 const [editingRecord, setEditingRecord] = useState({
-    brand: '',
+    vendor: '',
     name: '',
     quantity: 0,
 } as Drink);
@@ -44,28 +44,28 @@ const edit = (record: Drink) => {
 
     const columns = [
         {
-            title: 'Brand',
-            dataIndex: 'brand',
+            title: 'Vendor',
+            dataIndex: 'vendor',
             width: '30%',
             filters: [
                 {
-                    text: Brands.generalBeverage,
-                    value: Brands.generalBeverage,
+                    text: Vendors.generalBeverage,
+                    value: Vendors.generalBeverage,
                 },
                 {
-                    text: Brands.triangleDistributing,
-                    value: Brands.triangleDistributing,
+                    text: Vendors.triangleDistributing,
+                    value: Vendors.triangleDistributing,
                 },
                 {
-                    text: Brands.breakThru,
-                    value: Brands.breakThru,
+                    text: Vendors.breakThru,
+                    value: Vendors.breakThru,
                 },
                 {
-                    text: Brands.badgerLiquor,
-                    value: -Brands.badgerLiquor,
+                    text: Vendors.badgerLiquor,
+                    value: -Vendors.badgerLiquor,
                 },
             ],
-            onFilter: (value, record) => record.brand.includes(value),
+            onFilter: (value, record) => record.vendor.includes(value),
             filterSearch: true,
         },
         {

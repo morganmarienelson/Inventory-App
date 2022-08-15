@@ -4,7 +4,7 @@ import styles from "./css/modal.module.css"
 import {Drink} from "../types/drink";
 import {pubDrinks} from "../data/pubDrinks";
 import {loungeDrinks} from "../data/loungeDrinks";
-import {Brands} from "../enums/brands";
+import {Vendors} from "../enums/vendors";
 
 
 interface AddNewLiquorModalProps{
@@ -69,10 +69,10 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                     },
                 ]}>
                     <Select>
-                        <Select.Option value={Brands.generalBeverage}>{Brands.generalBeverage}</Select.Option>
-                        <Select.Option value={Brands.triangleDistributing}>{Brands.triangleDistributing}</Select.Option>
-                        <Select.Option value={Brands.badgerLiquor}>{Brands.badgerLiquor}</Select.Option>
-                        <Select.Option value={Brands.breakThru}>{Brands.breakThru}</Select.Option>
+                        <Select.Option value={Vendors.generalBeverage}>{Vendors.generalBeverage}</Select.Option>
+                        <Select.Option value={Vendors.triangleDistributing}>{Vendors.triangleDistributing}</Select.Option>
+                        <Select.Option value={Vendors.badgerLiquor}>{Vendors.badgerLiquor}</Select.Option>
+                        <Select.Option value={Vendors.breakThru}>{Vendors.breakThru}</Select.Option>
                     </Select>
                 </Form.Item>
                 <Form.Item label="Name" name="name"  rules={[
