@@ -16,7 +16,7 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
 
     const onModalOkCancel = () => {
         Modal.confirm({
-            title: "Are you sure that you want to close this form? This new liquor has not been saved. You did not press submit.",
+            title: "Are you sure that you want to close this form? This new liquor has not been added. You did not press submit.",
             onOk: () => {
                 setShowAddModal(false);
             },
@@ -24,7 +24,6 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
     };
 
     const onFinish = async (values: any) => {
-        console.log(values);
         if (side == Sides.pubSide){
             try {
                 const res = await fetch('http://localhost:3000/api/pubDrinks', {
@@ -95,8 +94,11 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                     width: 250,
                 }} placeholder="Enter Name" />
                 </Form.Item>
-                {/* TODO: Check number type */}
-                <Form.Item label="Quantity" name="quantity"  >
+                <Form.Item label="Quantity" name="quantity"  rules={[{
+                    required: true,
+                    message: "A number must be entered!",
+                    pattern: new RegExp(/^[0-9]+$/)
+                }]}  >
                     <InputNumber  min={0}  value={quantity} onChange={onQuantityChange}/>
                 </Form.Item>
                 <Form.Item  className={styles.submitBtn}

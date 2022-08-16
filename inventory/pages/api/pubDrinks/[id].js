@@ -1,5 +1,5 @@
 import connectMongo from '../../../utils/connectMongo'
-import PubDrink from '../../../models/pubDrinks'
+import PubDrink from '../../../models/pubDrinksSchema'
 
 export default async function (req, res){
     await connectMongo();

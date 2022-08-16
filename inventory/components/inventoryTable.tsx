@@ -1,9 +1,11 @@
 import 'antd/dist/antd.css';
 import React, { useState} from "react";
-import {Space, Table, Typography} from 'antd';
-import EditInventoryModal from "./editInventoryModal";
+import {Modal, Space, Table, Typography} from 'antd';
+import EditInventoryModal from "./inventoryAdditionModal";
 import {Drink} from "../types/drink";
 import {Vendors } from "../enums/vendors";
+import InventoryAdditionModal from "./inventoryAdditionModal";
+import InventoryRemovalModal from "./inventoryRemovalModal";
 
 interface InventoryTableProps{
     data: Array<Drink>;
@@ -11,17 +13,37 @@ interface InventoryTableProps{
 
 
 const InventoryTable:React.FC<InventoryTableProps> = ({data}) => {
-const [showEditModal, setShowEditModal] = useState(false);
+const [showAddModal, setShowAddModal] = useState(false);
+const [showRemoveModal, setShowRemoveModal] = useState(false);
 const [editingRecord, setEditingRecord] = useState({
     vendor: '',
     name: '',
     quantity: 0,
 } as Drink);
 
-const edit = (record: Drink) => {
+const add = (record: Drink) => {
     setEditingRecord(record);
-    setShowEditModal(true);
+    setShowAddModal(true);
 };
+
+    const remove = (record: Drink) => {
+        setEditingRecord(record);
+        setShowRemoveModal(true);
+    };
+
+    const deleteLiquor = (record: Drink) => {
+        const name = record.name;
+        const vendor = record.vendor;
+        const title =  `Are you sure that you want to delete ${name} from  ${vendor} from the database?`
+        console.log(name);
+        Modal.confirm({
+            title: title,
+            okType: "danger",
+            onOk: async () => {
+              //TODO: Delete from database on current side
+            },
+        });
+    }
 
     const columns = [
         {
@@ -68,14 +90,14 @@ const edit = (record: Drink) => {
                 return (
                     <>
                     <Space size="middle">
-                        <Typography.Link onClick={() => edit(record)}>
+                        <Typography.Link onClick={() => add(record)}>
                             Add
                         </Typography.Link>
-                        <Typography.Link onClick={() => edit(record)}>
+                        <Typography.Link onClick={() => remove(record)}>
                             Remove
                         </Typography.Link>
-                        <Typography.Link onClick={() => edit(record)}>
-                            Delete Liquor
+                        <Typography.Link onClick={() => deleteLiquor(record)}>
+                            Delete
                         </Typography.Link>
                     </Space>
                     </>
@@ -86,7 +108,8 @@ const edit = (record: Drink) => {
 
 return (
     <>
-        <EditInventoryModal showUpdateModal={showEditModal} setShowUpdateModal={setShowEditModal} record={editingRecord} />
+        <InventoryAdditionModal showModal={showAddModal} setShowModal={setShowAddModal} record={editingRecord} />
+        <InventoryRemovalModal showModal={showRemoveModal} setShowModal={setShowRemoveModal} record={editingRecord} />
         <Table columns={columns} dataSource={data} />
     </>
 );
