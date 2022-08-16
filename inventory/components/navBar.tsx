@@ -6,10 +6,10 @@ const NavBar = () => {
 
     <nav className={styles.navBar}>
         <Link href='/'>
-            <a className={styles.link}>Inventory</a>
+            <a className={styles.link}>Inventory Table</a>
         </Link>
         <Link href='/log'>
-        <a className={styles.link}>Restock Log</a>
+        <a className={styles.link}>Inventory Log</a>
         </Link>
     </nav>
    )

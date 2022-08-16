@@ -45,7 +45,7 @@ export default function Index(
        </div>
        {showTable ? (
            <div className={styles.table}>
-              <InventoryTable data={tableData} side={side} />
+              <InventoryTable data={tableData} />
            </div>
        ) : (
            <></>

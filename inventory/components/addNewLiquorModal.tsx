@@ -3,6 +3,7 @@ import React, {useState} from "react";
 import styles from "./css/modal.module.css"
 import {Vendors} from "../enums/vendors";
 import { Sides } from "../enums/side";
+import {employeeData} from "../data/employeeData";
 
 
 interface AddNewLiquorModalProps{
@@ -19,6 +20,7 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
             title: "Are you sure that you want to close this form? This new liquor has not been added. You did not press submit.",
             onOk: () => {
                 setShowAddModal(false);
+                message.warn("Liquor was not added to the database")
             },
         });
     };
@@ -38,8 +40,9 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                 setShowAddModal(false);
             } catch (error) {
                 //TODO: handle the frontend display of non unique name
+                message.error("A liquor with this name already exists in the database. Please enter a different name or look for this liquor in the inventory table.", 2);
                 //TODO: handle the frontend display of any others errors
-                console.log(error); 
+                message.error("Something went wrong. This liquor could not be added", 2);
             }
         } else if (side == Sides.loungeSide){
             try {
@@ -70,7 +73,6 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
         setQuantity(value);
     };
 
-
     return (
         <Modal visible={showAddModal} onCancel={onModalOkCancel} onOk={onModalOkCancel} destroyOnClose={true}>
             <div className={styles.title}>{side}: New Liquor Information</div>
@@ -91,14 +93,14 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                         <Select.Option value={Vendors.breakThru}>{Vendors.breakThru}</Select.Option>
                     </Select>
                 </Form.Item>
-                <Form.Item className={styles.formItem} label="Name" name="name"  rules={[
+                <Form.Item className={styles.formItem} label="Liquor Name" name="name"  rules={[
                     {
                         required: true,
                     },
                 ]} >
                     <Input style={{
                     width: 250,
-                }} placeholder="Enter Name" />
+                }} placeholder="Enter Liquor Name" />
                 </Form.Item>
                 <Form.Item label="Quantity" name="quantity" className={styles.quantityItem}  rules={[{
                     required: true,

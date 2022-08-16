@@ -1,18 +1,26 @@
-import {InputNumber, Modal, Form, Button} from "antd";
-import React, { useState} from "react";
+import {InputNumber, Modal, Form, Button, Select, message} from "antd";
+import React, {useEffect, useState} from "react";
 import {Drink} from "../types/drink";
 import styles from "./css/modal.module.css";
 import {Sides} from "../enums/side";
+import {loungeDrinks} from "../data/loungeDrinks";
+import {pubDrinks} from "../data/pubDrinks";
 
 interface InventoryAdditionModalProps{
     showModal: boolean;
     setShowModal : (showUpdate) => void;
     record: Drink;
+    employeeNames: any;
 }
 
-const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModal, setShowModal, record}) => {
+const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModal, employeeNames, setShowModal, record}) => {
     const [quantityAdded, setQuantityAdded] = useState(0);
     const [quantityAfter, setQuantityAfter] = useState(0);
+    const [employee, setEmployee] = useState('');
+
+    const onEmployeeChange = (value: string) => {
+        setEmployee(value)
+    };
 
     const validateMessages = {
         required: '${label} is required!',
@@ -22,8 +30,7 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
         Modal.confirm({
             title: "Are you sure that you want to close this form? The addition has not been recorded. You did not press submit.",
             onOk: () => {
-                setQuantityAfter(record.quantity);
-                setQuantityAdded(0);
+                message.warn("Units of selected liquor has not been changed")
                 setShowModal(false);
             },
         });
@@ -37,9 +44,8 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
      const onFinish = async (values: any) => {
         console.log(values);
         //TODO: add an update to current drink record, add addition action
-        setQuantityAfter(record.quantity);
-        setQuantityAdded(0);
         setShowModal(false)
+         message.success("The quantity has been updated", 2);
     };
 
     return (
@@ -70,6 +76,29 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
                     Number of Units After Addition: {quantityAfter}
                 </div>
             </div>
+                <div className={styles.unitsAdded}>
+                    <div className={styles.quantityHeader}>
+                       Employee Name:
+                    </div>
+                    <div>
+                        <Form.Item name="Employee"
+                                   style={{
+                                       width: 250,
+                                   }}
+                                   rules={[{
+                                       required: true,
+                                   }]}  >
+                            <Select
+                                showSearch
+                                onChange={onEmployeeChange}
+                                placeholder="Select a person"
+                                filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
+                            >
+                                {employeeNames}
+                            </Select>
+                        </Form.Item>
+                    </div>
+                </div>
                 <Form.Item  className={styles.submitBtn}
                 >
             <Button type="primary" htmlType="submit" className={styles.submitBtn} >

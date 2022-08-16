@@ -1,4 +1,4 @@
-import {InputNumber, Modal, Form, Button} from "antd";
+import {InputNumber, Modal, Form, Button, Select, message} from "antd";
 import React, { useState} from "react";
 import emailjs from 'emailjs-com';
 import {Drink} from "../types/drink";
@@ -9,11 +9,17 @@ interface InventoryRemovalModalProps{
     showModal: boolean;
     setShowModal : (showUpdate) => void;
     record: Drink;
+    employeeNames: any;
 }
 
-const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal, setShowModal, record}) => {
+const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal, setShowModal, record,employeeNames}) => {
     const [quantityTaken, setQuantityTaken] = useState(0);
     const [quantityAfter, setQuantityAfter] = useState(0);
+    const [employee, setEmployee] = useState('');
+
+    const onEmployeeChange = (value: string) => {
+        setEmployee(value)
+    };
 
     //TODO: test email then call function in on finish
     const sendEmail = () => {
@@ -35,8 +41,7 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
         Modal.confirm({
             title: "Are you sure that you want to close this form? The addition has not been recorded. You did not press submit.",
             onOk: () => {
-                setQuantityAfter(record.quantity);
-                setQuantityTaken(0);
+                message.warn("Units of selected liquor has not been changed")
                 setShowModal(false);
             },
         });
@@ -51,7 +56,8 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
         //TODO: add an update to current drink record, add removal action
         setQuantityAfter(record.quantity);
         setQuantityTaken(0);
-        setShowModal(false)
+        setShowModal(false);
+        message.success("The quantity has been updated", 2);
     };
 
     return (
@@ -80,6 +86,29 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
                 <div className={styles.quantityContainer}>
                     <div className={styles.quantityHeader}>
                         Number of Units After Removal: {quantityAfter}
+                    </div>
+                </div>
+                <div className={styles.unitsAdded}>
+                    <div className={styles.quantityHeader}>
+                        Employee Name:
+                    </div>
+                    <div>
+                        <Form.Item name="Employee"
+                                   style={{
+                                       width: 250,
+                                   }}
+                                   rules={[{
+                                       required: true,
+                                   }]}  >
+                            <Select
+                                showSearch
+                                onChange={onEmployeeChange}
+                                placeholder="Select a person"
+                                filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
+                            >
+                                {employeeNames}
+                            </Select>
+                        </Form.Item>
                     </div>
                 </div>
                 <Form.Item  className={styles.submitBtn}
