@@ -98,6 +98,9 @@ const add = (record: Drink) => {
                             Remove
                         </Typography.Link>
                         <Typography.Link onClick={() => deleteLiquor(record)}>
+                            View
+                        </Typography.Link>
+                        <Typography.Link onClick={() => deleteLiquor(record)}>
                             Delete
                         </Typography.Link>
                     </Space>
