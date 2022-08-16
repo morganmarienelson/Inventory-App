@@ -3,23 +3,22 @@ import SideSelector from "../components/sideSelecter";
 import {useState} from "react";
 import AddNewLiquorBtn from "../components/addNewLiquourBtn";
 import styles from "../styles/Home.module.css"
-import {Drink} from "../types/drink"
 import { useEffect } from "react";
 import { Sides } from "../enums/side";
 
-const Index = ({ loungeDrinks, pubDrinks }) => {
+export default function Index({loungeDrinks, pubDrinks}) {
     const [side, setSide ] = useState('');
     const [showTable, setShowTable ] = useState(false);
-    const [tableData, setTableData] = useState(Array<Drink>());
+    const [tableData, setTableData] = useState();
 
     useEffect(() => {
-        const setData = () => {
-            if (side == Sides.pubSide){
-                setTableData(loungeDrinks);
-            } else if (side == Sides.loungeSide){
-                setTableData(pubDrinks);
-            }
+        const setData = async () => {
+            if (side == Sides.loungeSide){
+         setTableData(loungeDrinks);
+        } else if (side == Sides.pubSide){
+            setTableData(pubDrinks);
         }
+    }
         setData();
     }, [side]);
 
@@ -45,15 +44,12 @@ const Index = ({ loungeDrinks, pubDrinks }) => {
   );
 }
 
-export default Index;
-
 Index.getInitialProps = async () => {
-    const loungeRes = await fetch("http://localhost:3000/api/loungeDrinks");
-    const {loungeData} = await loungeRes.json();
+    const res = await fetch('http://localhost:3000/api/loungeDrinks' )
+    const loungeData  = await res.json()
 
-    const pubRec = await fetch("http://localhost:3000/api/pubDrinks");
-    const {pubData} = await pubRec.json();
+    const pubRes = await fetch('http://localhost:3000/api/pubDrinks');
+    const pubData = await pubRes.json();
 
-    return { loungeDrinks: loungeData, pubDrinks: pubData }
-
+    return {loungeDrinks: loungeData.data, pubDrinks: pubData.data};
 }

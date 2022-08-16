@@ -13,10 +13,10 @@ const PubDrinkSchema = new Schema({
     quantity: {
         type: Number,
         required: true,
-    },
+    }
 })
 
 
-const PubDrink = models.PubDrinkSchema || model('PubDrink', PubDrinkSchema);
+const PubDrink = models.PubDrink || model('PubDrink', PubDrinkSchema);
 
 export default PubDrink;

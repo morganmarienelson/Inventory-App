@@ -13,10 +13,10 @@ const LoungeDrinkSchema = new Schema({
     quantity: {
         type: Number,
         required: true,
-    },
+    }
 })
 
 
-const LoungeDrink = models.LoungeDrinkSchema || model('LoungeDrink', LoungeDrinkSchema);
+const LoungeDrink = models.LoungeDrink || model('LoungeDrink', LoungeDrinkSchema);
 
 export default LoungeDrink;
