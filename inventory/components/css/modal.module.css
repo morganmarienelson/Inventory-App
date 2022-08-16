@@ -3,6 +3,7 @@
     font-weight: 500;
     font-size: 30px;
     text-align: center;
+    margin-top: 30px;
 }
 
 .quantityContainer{
@@ -18,20 +19,29 @@
 }
 
 .form {
-    margin-left: 30px;
+    margin: auto;
+}
+
+.formItem{
+    display: flex;
+    justify-content: center;
+}
+
+.quantityItem{
+    margin-left: 80px;
 }
 
 .title {
     font-size: 20px;
     font-weight: 500;
-    align-content: center;
-    margin-bottom: 20px;
+    text-align: center;
+    margin: 30px;
 }
 
 .submitBtn{
     display: flex;
     justify-content: end;
-    margin-top: 20px;
+    margin: 20px 20px 0 0;
 }
 
 .unitsAdded{

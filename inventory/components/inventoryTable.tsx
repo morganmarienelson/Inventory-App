@@ -1,11 +1,11 @@
 import 'antd/dist/antd.css';
 import React, { useState} from "react";
-import {Modal, Space, Table, Typography} from 'antd';
-import EditInventoryModal from "./inventoryAdditionModal";
+import { Select, Space, Table, Typography, Popconfirm, message} from 'antd';
 import {Drink} from "../types/drink";
 import {Vendors } from "../enums/vendors";
 import InventoryAdditionModal from "./inventoryAdditionModal";
 import InventoryRemovalModal from "./inventoryRemovalModal";
+import {employeeData} from "../data/employeeData";
 
 interface InventoryTableProps{
     data: Array<Drink>;
@@ -31,19 +31,16 @@ const add = (record: Drink) => {
         setShowRemoveModal(true);
     };
 
-    const deleteLiquor = (record: Drink) => {
-        const name = record.name;
-        const vendor = record.vendor;
-        const title =  `Are you sure that you want to delete ${name} from  ${vendor} from the database?`
-        console.log(name);
-        Modal.confirm({
-            title: title,
-            okType: "danger",
-            onOk: async () => {
-              //TODO: Delete from database on current side with success message
-            },
-        });
+
+
+    const deleteLiquor = (e: any) => {
+        message.success('Deletion was successful');
     }
+
+    const onCancelDelete = (e) => {
+        message.warn('Deletion did not occur');
+    };
+
 
     const columns = [
         {
@@ -96,8 +93,16 @@ const add = (record: Drink) => {
                         <Typography.Link onClick={() => remove(record)}>
                             Remove
                         </Typography.Link>
-                        <Typography.Link onClick={() => deleteLiquor(record)}>
-                            Delete
+                        <Typography.Link >
+                            <Popconfirm
+                                title="Are you sure to delete this liquor?"
+                                onConfirm={deleteLiquor}
+                                onCancel={onCancelDelete}
+                                okText="Yes"
+                                cancelText="No"
+                            >
+                                <a href="#">Delete</a>
+                            </Popconfirm>
                         </Typography.Link>
                     </Space>
                     </>
