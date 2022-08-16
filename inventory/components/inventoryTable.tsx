@@ -9,13 +9,12 @@ import {Vendors } from "../enums/vendors";
 import {Sides} from "../enums/side";
 
 interface InventoryTableProps{
-    side: string;
+    data: Array<Drink>;
 }
 
 
-const InventoryTable:React.FC<InventoryTableProps> = ({side}) => {
+const InventoryTable:React.FC<InventoryTableProps> = ({data}) => {
 const [showEditModal, setShowEditModal] = useState(false);
-const [data, setData] = useState(Array<Drink>());
 const [editingRecord, setEditingRecord] = useState({
     vendor: '',
     name: '',
@@ -30,17 +29,6 @@ const edit = (record: Drink) => {
     const deleteRecord = (record: Drink) => {
 
     };
-
-    useEffect(() => {
-        const showData = () => {
-            if (side == Sides.pubSide){
-                setData(pubDrinks)
-            } else if (side == Sides.loungeSide){
-                setData(loungeDrinks)
-            }
-        }
-        showData();
-    }, [side])
 
     const columns = [
         {

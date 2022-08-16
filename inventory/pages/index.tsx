@@ -3,11 +3,47 @@ import SideSelector from "../components/sideSelecter";
 import {useState} from "react";
 import AddNewLiquorBtn from "../components/addNewLiquourBtn";
 import styles from "../styles/Home.module.css"
+import {Drink} from "../types/drink"
+import { useEffect } from "react";
+import { Sides } from "../enums/side";
 
-const Home = () => {
+const Index = ({ drinks }) => {
     const [side, setSide ] = useState('');
     const [showTable, setShowTable ] = useState(false);
+    const [tableData, setTableData] = useState(Array<Drink>());
+    const [pubData, setPubData] = useState(Array<Drink>());
+    const [loungeData, setLoungeData] = useState(Array<Drink>());
 
+    useEffect(() => {
+        const getData = () => {
+            {drinks.map(drink => {
+                const pubDrink = {
+                 vendor: drink.brand,
+                 name: drink.name,
+                 quantity: drink.pubQuantity
+                } 
+                pubData.push(pubDrink);
+                const loungeDrink = {
+                 vendor: drink.brand,
+                 name: drink.name,
+                 quantity: drink.loungeQuantity
+                } 
+                loungeData.push(loungeDrink);
+             })
+        }
+        getData();
+    }, [])
+
+    useEffect(() => {
+        const setData = () => {
+            if (side == Sides.pubSide){
+                setTableData(drinks);
+            } else if (side == Sides.loungeSide){
+                setTableData(drinks)
+            }
+        }
+        setData();
+    }, [side])
 
     return (
    <>
@@ -15,13 +51,13 @@ const Home = () => {
            <div>
                <SideSelector setSide={setSide} setShowTable={setShowTable}/>
            </div>
-           <div>
+           <div >
                <AddNewLiquorBtn/>
            </div>
        </div>
        {showTable ? (
            <>
-              <InventoryTable side={side}/>
+              <InventoryTable data={tableData}  />
            </>
        ) : (
            <></>
@@ -31,4 +67,12 @@ const Home = () => {
   );
 }
 
-export default Home;
+export default Index;
+
+Index.getInitialProps = async () => {
+    const res = await fetch("http://localhost:3000/api/drinks");
+    const {data} = await res.json();
+
+    return { drinks: data }
+
+}

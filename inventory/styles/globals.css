@@ -15,6 +15,12 @@ a {
   box-sizing: border-box;
 }
 
+.wrapper{
+  max-width: 1200px;
+  padding: 0 16px;
+  margin: auto;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

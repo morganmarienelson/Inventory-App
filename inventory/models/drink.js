@@ -1,7 +1,7 @@
 import {Schema, model, models } from 'mongoose';
 
 const DrinkSchema = new Schema({
-    brand: {
+    vendor: {
         type: String,
         required: true
     },
