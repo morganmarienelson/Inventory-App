@@ -1,12 +1,9 @@
 import 'antd/dist/antd.css';
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 import {Space, Table, Typography} from 'antd';
-import {pubDrinks} from "../data/pubDrinks";
-import {loungeDrinks} from "../data/loungeDrinks";
 import EditInventoryModal from "./editInventoryModal";
 import {Drink} from "../types/drink";
 import {Vendors } from "../enums/vendors";
-import {Sides} from "../enums/side";
 
 interface InventoryTableProps{
     data: Array<Drink>;
@@ -26,15 +23,11 @@ const edit = (record: Drink) => {
     setShowEditModal(true);
 };
 
-    const deleteRecord = (record: Drink) => {
-
-    };
-
     const columns = [
         {
             title: 'Vendor',
             dataIndex: 'vendor',
-            width: '25%',
+            width: '30%',
             filters: [
                 {
                     text: Vendors.generalBeverage,

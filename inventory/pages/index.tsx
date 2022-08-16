@@ -39,9 +39,9 @@ export default function Index({loungeDrinks, pubDrinks}) {
        )}
        </div>
        {showTable ? (
-           <>
+           <div className={styles.table}>
               <InventoryTable data={tableData}  />
-           </>
+           </div>
        ) : (
            <></>
        )}
