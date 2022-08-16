@@ -20,7 +20,6 @@ const [editingRecord, setEditingRecord] = useState({
     name: '',
     quantity: 0,
 } as Drink);
-    const { Option } = Select;
 
 const add = (record: Drink) => {
     setEditingRecord(record);
@@ -32,10 +31,7 @@ const add = (record: Drink) => {
         setShowRemoveModal(true);
     };
 
-    const employeeNames = [];
-    for (let i = 0; i < employeeData.length; i++) {
-        employeeNames.push(<Option key={employeeData[i].id.toString(36)}>{employeeData[i].name.toString()}</Option>);
-    }
+
 
     const deleteLiquor = (e: any) => {
         message.success('Deletion was successful');
@@ -117,8 +113,8 @@ const add = (record: Drink) => {
 
 return (
     <>
-        <InventoryAdditionModal employeeNames={employeeNames} showModal={showAddModal} setShowModal={setShowAddModal} record={editingRecord} />
-        <InventoryRemovalModal employeeNames={employeeNames} showModal={showRemoveModal} setShowModal={setShowRemoveModal} record={editingRecord} />
+        <InventoryAdditionModal showModal={showAddModal} setShowModal={setShowAddModal} record={editingRecord} />
+        <InventoryRemovalModal showModal={showRemoveModal} setShowModal={setShowRemoveModal} record={editingRecord} />
         <Table columns={columns} dataSource={data} />
     </>
 );

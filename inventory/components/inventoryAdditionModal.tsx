@@ -5,15 +5,15 @@ import styles from "./css/modal.module.css";
 import {Sides} from "../enums/side";
 import {loungeDrinks} from "../data/loungeDrinks";
 import {pubDrinks} from "../data/pubDrinks";
+import EmployeeSelector from "./employeeSelector";
 
 interface InventoryAdditionModalProps{
     showModal: boolean;
     setShowModal : (showUpdate) => void;
     record: Drink;
-    employeeNames: any;
 }
 
-const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModal, employeeNames, setShowModal, record}) => {
+const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModal, setShowModal, record}) => {
     const [quantityAdded, setQuantityAdded] = useState(0);
     const [quantityAfter, setQuantityAfter] = useState(0);
     const [employee, setEmployee] = useState('');
@@ -30,7 +30,7 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
         Modal.confirm({
             title: "Are you sure that you want to close this form? The addition has not been recorded. You did not press submit.",
             onOk: () => {
-                message.warn("Units of selected liquor has not been changed")
+                message.warn("Units of selected liquor was not changed")
                 setShowModal(false);
             },
         });
@@ -81,22 +81,7 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
                        Employee Name:
                     </div>
                     <div>
-                        <Form.Item name="Employee"
-                                   style={{
-                                       width: 250,
-                                   }}
-                                   rules={[{
-                                       required: true,
-                                   }]}  >
-                            <Select
-                                showSearch
-                                onChange={onEmployeeChange}
-                                placeholder="Select a person"
-                                filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
-                            >
-                                {employeeNames}
-                            </Select>
-                        </Form.Item>
+                    <EmployeeSelector onEmployeeChange={onEmployeeChange}/>
                     </div>
                 </div>
                 <Form.Item  className={styles.submitBtn}

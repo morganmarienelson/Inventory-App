@@ -23,7 +23,7 @@ const SideSelector:React.FC<SideSelectorProps> = ({setSide, setShowTable}) => {
             <Select
                 placeholder="Select Side"
                 style={{
-                    width: 250,
+                    width: 200,
                 }}
                 onChange={handleChange}
             >

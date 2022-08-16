@@ -4,15 +4,15 @@ import emailjs from 'emailjs-com';
 import {Drink} from "../types/drink";
 import styles from "./css/modal.module.css";
 import {Sides} from "../enums/side";
+import EmployeeSelector from "./employeeSelector";
 
-interface InventoryRemovalModalProps{
+interface InventoryRemovalModalProps {
     showModal: boolean;
-    setShowModal : (showUpdate) => void;
+    setShowModal: (showUpdate) => void;
     record: Drink;
-    employeeNames: any;
 }
 
-const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal, setShowModal, record,employeeNames}) => {
+const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal, setShowModal, record}) => {
     const [quantityTaken, setQuantityTaken] = useState(0);
     const [quantityAfter, setQuantityAfter] = useState(0);
     const [employee, setEmployee] = useState('');
@@ -93,22 +93,7 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
                         Employee Name:
                     </div>
                     <div>
-                        <Form.Item name="Employee"
-                                   style={{
-                                       width: 250,
-                                   }}
-                                   rules={[{
-                                       required: true,
-                                   }]}  >
-                            <Select
-                                showSearch
-                                onChange={onEmployeeChange}
-                                placeholder="Select a person"
-                                filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
-                            >
-                                {employeeNames}
-                            </Select>
-                        </Form.Item>
+                    <EmployeeSelector onEmployeeChange={onEmployeeChange}/>
                     </div>
                 </div>
                 <Form.Item  className={styles.submitBtn}

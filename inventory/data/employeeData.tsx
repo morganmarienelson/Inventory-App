@@ -1,18 +1,18 @@
 export const employeeData = [
     {
-        name: 'Employee 1',
+        name: 'Adam',
         id: 1,
     },
     {
-        name: 'Employee 2',
+        name: 'Bernie',
         id: 2,
     },
     {
-        name: 'Employee 3',
+        name: 'Carol',
         id: 3,
     },
     {
-        name: 'Employee 4',
+        name: 'Derrick',
         id: 4,
     },
 
