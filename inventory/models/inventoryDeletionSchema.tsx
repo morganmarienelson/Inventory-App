@@ -4,18 +4,17 @@ const InventoryDeletionSchema = new Schema({
     employee: {
         type: String,
         required: true,
-        unique: true,
     },
-    vendor: {
-        type: String,
-        required: true,
-    },
-    name: {
+    productId: {
         type: String,
         required: true,
     },
     quantityAtDeletion: {
         type: Number,
+        required: true,
+    },
+    date: {
+        type: Date,
         required: true,
     }
 })

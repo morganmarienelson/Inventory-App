@@ -4,7 +4,6 @@ const InventoryRemovalSchema = new Schema({
     employee: {
         type: String,
         required: true,
-        unique: true,
     },
     vendor: {
         type: String,

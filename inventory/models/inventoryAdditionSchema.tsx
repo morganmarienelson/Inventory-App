@@ -4,13 +4,8 @@ const InventoryAdditionSchema = new Schema({
     employee: {
         type: String,
         required: true,
-        unique: true,
     },
-    vendor: {
-        type: String,
-        required: true,
-    },
-    name: {
+    productId: {
         type: String,
         required: true,
     },
@@ -24,6 +19,10 @@ const InventoryAdditionSchema = new Schema({
     },
     quantityAfter: {
         type: Number,
+        required: true,
+    },
+    date: {
+        type: Date,
         required: true,
     }
 })

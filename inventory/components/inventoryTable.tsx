@@ -40,7 +40,7 @@ const add = (record: Drink) => {
             title: title,
             okType: "danger",
             onOk: async () => {
-              //TODO: Delete from database on current side
+              //TODO: Delete from database on current side with success message
             },
         });
     }

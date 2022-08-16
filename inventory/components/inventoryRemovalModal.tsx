@@ -15,6 +15,7 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
     const [quantityTaken, setQuantityTaken] = useState(0);
     const [quantityAfter, setQuantityAfter] = useState(0);
 
+    //TODO: test email then call function in on finish
     const sendEmail = () => {
         // emailjs.send("service_ui2rj0j","template_m50q7pp",{
         //     name: newRecord.name,

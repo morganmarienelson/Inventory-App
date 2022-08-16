@@ -1,4 +1,4 @@
-import {Button, Form, Input, InputNumber, Modal, Select} from "antd";
+import {Button, Form, Input, InputNumber, message, Modal, Select} from "antd";
 import React, {useState} from "react";
 import styles from "./css/modal.module.css"
 import {Vendors} from "../enums/vendors";
@@ -34,7 +34,11 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                     },
                     body: JSON.stringify(values)
                 })
+                message.success("Liquor has been added to the inventory on the Pub Side", 2);
+                setShowAddModal(false);
             } catch (error) {
+                //TODO: handle the frontend display of non unique name
+                //TODO: handle the frontend display of any others errors
                 console.log(error); 
             }
         } else if (side == Sides.loungeSide){
@@ -47,12 +51,15 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                     },
                     body: JSON.stringify(values)
                 })
+                message.success("Liquor has been added to the inventory on the Lounge Side", 2);
+                setShowAddModal(false);
             } catch (error) {
-                console.log(error); 
+                //TODO: handle the frontend display of non unique name
+                message.error("A liquor with this name already exists in the database. Please enter a different name or look for this liquor in the inventory table.", 2);
+                //TODO: handle the frontend display of any others errors
+                message.error("Something went wrong. This liquor could not be added", 2);
             }
         }
-             {/* TODO: Show success message */}
-        setShowAddModal(false);
     };
 
     const validateMessages = {
@@ -84,7 +91,6 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                         <Select.Option value={Vendors.breakThru}>{Vendors.breakThru}</Select.Option>
                     </Select>
                 </Form.Item>
-                           {/* TODO: Handle frontend error when name not unique */}
                 <Form.Item label="Name" name="name"  rules={[
                     {
                         required: true,
