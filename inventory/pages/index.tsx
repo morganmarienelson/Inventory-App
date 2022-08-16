@@ -28,9 +28,15 @@ export default function Index({loungeDrinks, pubDrinks}) {
            <div>
                <SideSelector setSide={setSide} setShowTable={setShowTable}/>
            </div>
-           <div >
-               <AddNewLiquorBtn/>
+           {showTable ? (
+           <>
+               <div >
+               <AddNewLiquorBtn side={side}/>
            </div>
+           </>
+       ) : (
+           <></>
+       )}
        </div>
        {showTable ? (
            <>

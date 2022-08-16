@@ -1,20 +1,17 @@
 import {Button, Form, Input, InputNumber, Modal, Select} from "antd";
 import React, {useState} from "react";
 import styles from "./css/modal.module.css"
-import {Drink} from "../types/drink";
-import {pubDrinks} from "../data/pubDrinks";
-import {loungeDrinks} from "../data/loungeDrinks";
 import {Vendors} from "../enums/vendors";
 
 
 interface AddNewLiquorModalProps{
     showAddModal: boolean;
     setShowAddModal : (showAddModal: boolean) => void;
+    side: string;
 }
 
-const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setShowAddModal}) => {
-    const [pubQuantity, setPubQuantity ] = useState(0);
-    const [loungeQuantity, setLoungeQuantity ] = useState(0);
+const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setShowAddModal, side}) => {
+    const [quantity, setQuantity ] = useState(0);
 
     const onModalOkCancel = () => {
         Modal.confirm({
@@ -26,21 +23,10 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
     };
 
     const onFinish = async (values: any) => {
-        //TODO: check to make suer drink is already not in database
         const newLiquor = values;
-        const newPubDrink = {
-            brand: newLiquor.brand,
-            name: newLiquor.name,
-            quantity: pubQuantity,
-        } as Drink
-        const newLoungeDrink = {
-            brand: newLiquor.brand,
-            name: newLiquor.name,
-            quantity: loungeQuantity,
-        } as Drink
+
         //TODO: force a re generation of table once added to database
-        pubDrinks.push(newPubDrink);
-        loungeDrinks.push(newLoungeDrink);
+     
         setShowAddModal(false);
     };
 
@@ -48,19 +34,14 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
         required: '${label} is required!',
     };
 
-    const onPubQuantityChange = (value: number) => {
-        setPubQuantity(value);
-    };
-
-
-    const onLoungeQuantityChange = (value: number) => {
-        setLoungeQuantity(value);
+    const onQuantityChange = (value: number) => {
+        setQuantity(value);
     };
 
 
     return (
         <Modal visible={showAddModal} onCancel={onModalOkCancel} onOk={onModalOkCancel} destroyOnClose={true}>
-            <div className={styles.title}>New Liquor Information</div>
+            <div className={styles.title}>{side}: New Liquor Information</div>
             <Form name="New Liquor" className={styles.form} onFinish={onFinish} validateMessages={validateMessages}
             >
                 <Form.Item label="Brand"  name="brand"    rules={[
@@ -68,7 +49,10 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                         required: true,
                     },
                 ]}>
-                    <Select>
+                    <Select  placeholder="Select Vendor"
+                style={{
+                    width: 250,
+                }}>
                         <Select.Option value={Vendors.generalBeverage}>{Vendors.generalBeverage}</Select.Option>
                         <Select.Option value={Vendors.triangleDistributing}>{Vendors.triangleDistributing}</Select.Option>
                         <Select.Option value={Vendors.badgerLiquor}>{Vendors.badgerLiquor}</Select.Option>
@@ -80,21 +64,12 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                         required: true,
                     },
                 ]} >
-                    <Input  />
+                    <Input style={{
+                    width: 250,
+                }} placeholder="Enter Name" />
                 </Form.Item>
-                <Form.Item label="Pub Side Quantity" name="pubQuantity" rules={[
-                    {
-                        required: true,
-                    },
-                ]} >
-                    <InputNumber  min={0} value={pubQuantity} onChange={onPubQuantityChange}/>
-                </Form.Item>
-                <Form.Item label="Lounge Side Quantity" name="loungeQuantity"  rules={[
-                    {
-                        required: true,
-                    },
-                ]} >
-                    <InputNumber  min={0}  value={loungeQuantity}  onChange={onLoungeQuantityChange}/>
+                <Form.Item label="Quantity" name="quantity"  >
+                    <InputNumber  min={0}  value={quantity}  defaultValue={0} onChange={onQuantityChange}/>
                 </Form.Item>
                 <Form.Item  className={styles.submitBtn}
                 >

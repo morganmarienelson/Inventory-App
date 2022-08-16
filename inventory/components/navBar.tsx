@@ -6,10 +6,10 @@ const NavBar = () => {
 
     <nav className={styles.navBar}>
         <Link href='/'>
-            <a>Joker Inventory</a>
+            <a className={styles.link}>Inventory</a>
         </Link>
         <Link href='/restock'>
-            <a>Restock Log</a>
+        <a className={styles.link}>Restock Log</a>
         </Link>
     </nav>
    )
