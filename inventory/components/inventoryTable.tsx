@@ -9,10 +9,11 @@ import InventoryRemovalModal from "./inventoryRemovalModal";
 
 interface InventoryTableProps{
     data: Array<Drink>;
+    side: string;
 }
 
 
-const InventoryTable:React.FC<InventoryTableProps> = ({data}) => {
+const InventoryTable:React.FC<InventoryTableProps> = ({data, side}) => {
 const [showAddModal, setShowAddModal] = useState(false);
 const [showRemoveModal, setShowRemoveModal] = useState(false);
 const [editingRecord, setEditingRecord] = useState({
@@ -34,7 +35,7 @@ const add = (record: Drink) => {
     const deleteLiquor = (record: Drink) => {
         const name = record.name;
         const vendor = record.vendor;
-        const title =  `Are you sure that you want to delete ${name} from  ${vendor} from the database?`
+        const title =  `Are you sure that you want to delete ${name} from  ${vendor} from the ${side}?`
         console.log(name);
         Modal.confirm({
             title: title,

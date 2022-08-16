@@ -1,7 +1,7 @@
 import InventoryTable from "../components/inventoryTable";
 import SideSelector from "../components/sideSelecter";
 import {useState} from "react";
-import AddNewLiquorBtn from "../components/addNewLiquourBtn";
+import AddNewLiquorBtn from "../components/addNewLiquorBtn";
 import styles from "../styles/Home.module.css"
 import { useEffect } from "react";
 import { Sides } from "../enums/side";
@@ -45,7 +45,7 @@ export default function Index(
        </div>
        {showTable ? (
            <div className={styles.table}>
-              <InventoryTable data={tableData}  />
+              <InventoryTable data={tableData} side={side} />
            </div>
        ) : (
            <></>

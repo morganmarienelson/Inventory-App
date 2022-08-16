@@ -80,7 +80,7 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                     {
                         required: true,
                     },
-                ]}>
+                ]} className={styles.formItem}>
                     <Select  placeholder="Select Vendor"
                 style={{
                     width: 250,
@@ -91,7 +91,7 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                         <Select.Option value={Vendors.breakThru}>{Vendors.breakThru}</Select.Option>
                     </Select>
                 </Form.Item>
-                <Form.Item label="Name" name="name"  rules={[
+                <Form.Item className={styles.formItem} label="Name" name="name"  rules={[
                     {
                         required: true,
                     },
@@ -100,7 +100,7 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                     width: 250,
                 }} placeholder="Enter Name" />
                 </Form.Item>
-                <Form.Item label="Quantity" name="quantity"  rules={[{
+                <Form.Item label="Quantity" name="quantity" className={styles.quantityItem}  rules={[{
                     required: true,
                     message: "A number must be entered!",
                     pattern: new RegExp(/^[0-9]+$/)
