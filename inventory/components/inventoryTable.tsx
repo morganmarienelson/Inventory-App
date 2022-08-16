@@ -34,7 +34,7 @@ const edit = (record: Drink) => {
         {
             title: 'Vendor',
             dataIndex: 'vendor',
-            width: '30%',
+            width: '25%',
             filters: [
                 {
                     text: Vendors.generalBeverage,
@@ -59,7 +59,7 @@ const edit = (record: Drink) => {
         {
             title: 'Name',
             dataIndex: 'name',
-            width: '30%',
+            width: '25%',
         },
         {
             title: 'Quantity',
@@ -76,10 +76,13 @@ const edit = (record: Drink) => {
                     <>
                     <Space size="middle">
                         <Typography.Link onClick={() => edit(record)}>
-                            Restock
+                            Add
                         </Typography.Link>
                         <Typography.Link onClick={() => edit(record)}>
                             Remove
+                        </Typography.Link>
+                        <Typography.Link onClick={() => edit(record)}>
+                            Delete Liquor
                         </Typography.Link>
                     </Space>
                     </>
