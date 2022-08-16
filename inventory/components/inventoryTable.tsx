@@ -1,46 +1,49 @@
 import 'antd/dist/antd.css';
-import React, {useEffect, useState} from "react";
-import {Space, Table, Typography} from 'antd';
-import {pubDrinks} from "../data/pubDrinks";
-import {loungeDrinks} from "../data/loungeDrinks";
-import EditInventoryModal from "./editInventoryModal";
+import React, { useState} from "react";
+import {Modal, Space, Table, Typography} from 'antd';
+import EditInventoryModal from "./inventoryAdditionModal";
 import {Drink} from "../types/drink";
 import {Vendors } from "../enums/vendors";
-import {Sides} from "../enums/side";
+import InventoryAdditionModal from "./inventoryAdditionModal";
+import InventoryRemovalModal from "./inventoryRemovalModal";
 
 interface InventoryTableProps{
-    side: string;
+    data: Array<Drink>;
 }
 
 
-const InventoryTable:React.FC<InventoryTableProps> = ({side}) => {
-const [showEditModal, setShowEditModal] = useState(false);
-const [data, setData] = useState(Array<Drink>());
+const InventoryTable:React.FC<InventoryTableProps> = ({data}) => {
+const [showAddModal, setShowAddModal] = useState(false);
+const [showRemoveModal, setShowRemoveModal] = useState(false);
 const [editingRecord, setEditingRecord] = useState({
     vendor: '',
     name: '',
     quantity: 0,
 } as Drink);
 
-const edit = (record: Drink) => {
+const add = (record: Drink) => {
     setEditingRecord(record);
-    setShowEditModal(true);
+    setShowAddModal(true);
 };
 
-    const deleteRecord = (record: Drink) => {
-
+    const remove = (record: Drink) => {
+        setEditingRecord(record);
+        setShowRemoveModal(true);
     };
 
-    useEffect(() => {
-        const showData = () => {
-            if (side == Sides.pubSide){
-                setData(pubDrinks)
-            } else if (side == Sides.loungeSide){
-                setData(loungeDrinks)
-            }
-        }
-        showData();
-    }, [side])
+    const deleteLiquor = (record: Drink) => {
+        const name = record.name;
+        const vendor = record.vendor;
+        const title =  `Are you sure that you want to delete ${name} from  ${vendor} from the database?`
+        console.log(name);
+        Modal.confirm({
+            title: title,
+            okType: "danger",
+            onOk: async () => {
+              //TODO: Delete from database on current side with success message
+            },
+        });
+    }
 
     const columns = [
         {
@@ -71,7 +74,7 @@ const edit = (record: Drink) => {
         {
             title: 'Name',
             dataIndex: 'name',
-            width: '30%',
+            width: '25%',
         },
         {
             title: 'Quantity',
@@ -87,11 +90,14 @@ const edit = (record: Drink) => {
                 return (
                     <>
                     <Space size="middle">
-                        <Typography.Link onClick={() => edit(record)}>
-                            Restock
+                        <Typography.Link onClick={() => add(record)}>
+                            Add
                         </Typography.Link>
-                        <Typography.Link onClick={() => edit(record)}>
+                        <Typography.Link onClick={() => remove(record)}>
                             Remove
+                        </Typography.Link>
+                        <Typography.Link onClick={() => deleteLiquor(record)}>
+                            Delete
                         </Typography.Link>
                     </Space>
                     </>
@@ -102,7 +108,8 @@ const edit = (record: Drink) => {
 
 return (
     <>
-        <EditInventoryModal showUpdateModal={showEditModal} setShowUpdateModal={setShowEditModal} record={editingRecord} />
+        <InventoryAdditionModal showModal={showAddModal} setShowModal={setShowAddModal} record={editingRecord} />
+        <InventoryRemovalModal showModal={showRemoveModal} setShowModal={setShowRemoveModal} record={editingRecord} />
         <Table columns={columns} dataSource={data} />
     </>
 );

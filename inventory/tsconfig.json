@@ -23,6 +23,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
+,
+    "models/pubDrinksSchema"
   ],
   "exclude": [
     "node_modules"

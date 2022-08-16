@@ -33,3 +33,9 @@
     justify-content: end;
     margin-top: 20px;
 }
+
+.unitsAdded{
+    display: flex;
+    justify-content: center;
+    margin: 40px 0 0 0;
+}

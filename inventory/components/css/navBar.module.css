@@ -1,0 +1,11 @@
+.navBar{
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #008834;
+    display: flex;
+    justify-content: space-between;
+}   
+ .link{
+    font-size: 18px;
+    color: white;
+ }
