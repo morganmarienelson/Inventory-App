@@ -2,6 +2,7 @@ import {Button, Form, Input, InputNumber, Modal, Select} from "antd";
 import React, {useState} from "react";
 import styles from "./css/modal.module.css"
 import {Vendors} from "../enums/vendors";
+import { Sides } from "../enums/side";
 
 
 interface AddNewLiquorModalProps{
@@ -23,10 +24,35 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
     };
 
     const onFinish = async (values: any) => {
-        const newLiquor = values;
-
-        //TODO: force a re generation of table once added to database
-     
+        console.log(values);
+        if (side == Sides.pubSide){
+            try {
+                const res = await fetch('http://localhost:3000/api/pubDrinks', {
+                    method: 'POST',
+                    headers: {
+                         "Accept": "application/json",
+                         "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(values)
+                })
+            } catch (error) {
+                console.log(error); 
+            }
+        } else if (side == Sides.loungeSide){
+            try {
+                const res = await fetch('http://localhost:3000/api/loungeDrinks', {
+                    method: 'POST',
+                    headers: {
+                         "Accept": "application/json",
+                         "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(values)
+                })
+            } catch (error) {
+                console.log(error); 
+            }
+        }
+             {/* TODO: Show success message */}
         setShowAddModal(false);
     };
 
@@ -44,7 +70,7 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
             <div className={styles.title}>{side}: New Liquor Information</div>
             <Form name="New Liquor" className={styles.form} onFinish={onFinish} validateMessages={validateMessages}
             >
-                <Form.Item label="Brand"  name="brand"    rules={[
+                <Form.Item label="Vendor"  name="vendor"    rules={[
                     {
                         required: true,
                     },
@@ -59,6 +85,7 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                         <Select.Option value={Vendors.breakThru}>{Vendors.breakThru}</Select.Option>
                     </Select>
                 </Form.Item>
+                           {/* TODO: Handle frontend error when name not unique */}
                 <Form.Item label="Name" name="name"  rules={[
                     {
                         required: true,
@@ -68,8 +95,9 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                     width: 250,
                 }} placeholder="Enter Name" />
                 </Form.Item>
+                {/* TODO: Check number type */}
                 <Form.Item label="Quantity" name="quantity"  >
-                    <InputNumber  min={0}  value={quantity}  defaultValue={0} onChange={onQuantityChange}/>
+                    <InputNumber  min={0}  value={quantity} onChange={onQuantityChange}/>
                 </Form.Item>
                 <Form.Item  className={styles.submitBtn}
                 >
