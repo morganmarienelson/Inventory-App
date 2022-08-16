@@ -7,43 +7,21 @@ import {Drink} from "../types/drink"
 import { useEffect } from "react";
 import { Sides } from "../enums/side";
 
-const Index = ({ drinks }) => {
+const Index = ({ loungeDrinks, pubDrinks }) => {
     const [side, setSide ] = useState('');
     const [showTable, setShowTable ] = useState(false);
     const [tableData, setTableData] = useState(Array<Drink>());
-    const [pubData, setPubData] = useState(Array<Drink>());
-    const [loungeData, setLoungeData] = useState(Array<Drink>());
-
-    useEffect(() => {
-        const getData = () => {
-            {drinks.map(drink => {
-                const pubDrink = {
-                 vendor: drink.brand,
-                 name: drink.name,
-                 quantity: drink.pubQuantity
-                } 
-                pubData.push(pubDrink);
-                const loungeDrink = {
-                 vendor: drink.brand,
-                 name: drink.name,
-                 quantity: drink.loungeQuantity
-                } 
-                loungeData.push(loungeDrink);
-             })
-        }
-        getData();
-    }, [])
 
     useEffect(() => {
         const setData = () => {
             if (side == Sides.pubSide){
-                setTableData(drinks);
+                setTableData(loungeDrinks);
             } else if (side == Sides.loungeSide){
-                setTableData(drinks)
+                setTableData(pubDrinks);
             }
         }
         setData();
-    }, [side])
+    }, [side]);
 
     return (
    <>
@@ -70,9 +48,12 @@ const Index = ({ drinks }) => {
 export default Index;
 
 Index.getInitialProps = async () => {
-    const res = await fetch("http://localhost:3000/api/drinks");
-    const {data} = await res.json();
+    const loungeRes = await fetch("http://localhost:3000/api/loungeDrinks");
+    const {loungeData} = await loungeRes.json();
 
-    return { drinks: data }
+    const pubRec = await fetch("http://localhost:3000/api/pubDrinks");
+    const {pubData} = await pubRec.json();
+
+    return { loungeDrinks: loungeData, pubDrinks: pubData }
 
 }

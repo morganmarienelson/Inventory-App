@@ -1,6 +1,6 @@
 import {Schema, model, models } from 'mongoose';
 
-const DrinkSchema = new Schema({
+const LoungeDrinkSchema = new Schema({
     vendor: {
         type: String,
         required: true
@@ -10,17 +10,13 @@ const DrinkSchema = new Schema({
         required: true,
         unique: true,
     },
-    pubQuantity: {
+    quantity: {
         type: Number,
         required: true,
     },
-    loungeQuantity: {
-        type: Number,
-        required: true,
-    }
 })
 
 
-const Drink = models.Drink || model('Drink', DrinkSchema);
+const LoungeDrink = models.LoungeDrinkSchema || model('LoungeDrink', LoungeDrinkSchema);
 
-export default Drink;
+export default LoungeDrink;

@@ -1,5 +1,5 @@
 import connectMongo from '../../../utils/connectMongo'
-import Drink from '../../../models/drink'
+import LoungeDrink from '../../../models/pubDrinks'
 
 export default async function (req, res){
     await connectMongo();
@@ -12,7 +12,7 @@ export default async function (req, res){
     switch(method) {
         case 'GET':
             try {
-                const drink = await Drink.findById(id);
+                const drink = await LoungeDrink.findById(id);
                 if (!drink){
                     return res.status(400).json({ success: false});
                 }
@@ -24,7 +24,7 @@ export default async function (req, res){
             break;
             case 'PUT':
                 try {
-                    const drink = await Drink.findByIdAndUpdate(id, req.body, {
+                    const drink = await LoungeDrink.findByIdAndUpdate(id, req.body, {
                         new: true,
                         runValidators: true,
                     });
@@ -40,7 +40,7 @@ export default async function (req, res){
                 break;
                 case 'DELETE':
                     try {
-                        const deletedNote = await Drink.deleteOne({_id: id});
+                        const deletedNote = await LoungeDrink.deleteOne({_id: id});
     
                         if (!deletedNote){
                             return res.status(400).json({ success: false})
