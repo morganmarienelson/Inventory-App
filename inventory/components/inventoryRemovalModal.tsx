@@ -4,7 +4,7 @@ import emailjs from 'emailjs-com';
 import {Drink} from "../types/drink";
 import styles from "./css/modal.module.css";
 import {Sides} from "../enums/side";
-import EmployeeSelector from "./employeeSelector";
+import EmployeeFormSelector from "./employeeFormSelector";
 import {LiquorInventoryMessages} from "../enums/liquorInventoryMessages";
 import {UserActionMessages} from "../enums/userActionMessages";
 
@@ -14,17 +14,14 @@ interface InventoryRemovalModalProps {
     record: any;
     side: string,
     setFetchTableData : (fetchTableData: boolean) => void;
+    employee: string;
 }
 
 
-const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal, setShowModal, record, side, setFetchTableData}) => {
+const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal, employee, setShowModal, record, side, setFetchTableData}) => {
     const [quantityTaken, setQuantityTaken] = useState(0);
     const [quantityAfter, setQuantityAfter] = useState(record.quantity);
-    const [employee, setEmployee] = useState('');
 
-    const onEmployeeChange = (value: string) => {
-        setEmployee(value)
-    };
 
     //TODO: test email then call function in on finish
     const sendEmail = () => {
@@ -145,7 +142,6 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
                     message.error(LiquorInventoryMessages.inventoryUpdateError, 2);
                 }
             }
-        setShowModal(false)
     };
 
     return (
@@ -176,20 +172,14 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
                         Number of Units After Removal: {quantityAfter}
                     </div>
                 </div>
-                <div className={styles.unitsAdded}>
-                    <div className={styles.quantityHeader}>
-                        Employee Name:
-                    </div>
-                    <div>
-                    <EmployeeSelector onEmployeeChange={onEmployeeChange}/>
-                    </div>
+                <div className={styles.submitContainer}>
+                    <Form.Item  className={styles.submitBtn}
+                    >
+                        <Button type="primary" htmlType="submit" className={styles.submitBtn} >
+                            Submit
+                        </Button>
+                    </Form.Item>
                 </div>
-                <Form.Item  className={styles.submitBtn}
-                >
-                    <Button type="primary" htmlType="submit" className={styles.submitBtn} >
-                        Submit
-                    </Button>
-                </Form.Item>
             </Form>
         </Modal>
     )

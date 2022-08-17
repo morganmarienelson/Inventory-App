@@ -6,15 +6,17 @@ import {Sides} from "../enums/side";
 
 interface SideSelectorProps{
     setSide: (side: string) => void
-    setShowTable: (showTable: boolean) => void;
+    setSelected: (showTable: boolean) => void;
+    setFetchTableData : (fetchTableData: boolean) => void;
 }
 
-const SideSelector:React.FC<SideSelectorProps> = ({setSide, setShowTable}) => {
+const SideSelector:React.FC<SideSelectorProps> = ({setSide, setSelected, setFetchTableData}) => {
     const { Option } = Select;
 
     const handleChange = (value: string) => {
         setSide(value)
-        setShowTable(true);
+        setSelected(true);
+        setFetchTableData(true);
     };
 
     return (

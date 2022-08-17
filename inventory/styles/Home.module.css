@@ -5,6 +5,11 @@
     10px;
 }
 
+.selectors{
+    display: flex;
+    margin: 10px;
+}
+
 .table{
     padding: 0 16px;
     margin: auto;

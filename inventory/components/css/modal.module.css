@@ -38,14 +38,18 @@
     margin: 30px;
 }
 
-.submitBtn{
-    display: flex;
-    justify-content: end;
-    margin: 20px 20px 0 0;
-}
-
 .unitsAdded{
     display: flex;
     justify-content: center;
     margin: 40px 0 0 0;
+}
+
+.employeeSelector{
+    margin-top: 40px;
+}
+
+.submitContainer{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 50px;
 }

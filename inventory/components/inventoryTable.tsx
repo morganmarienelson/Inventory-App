@@ -7,15 +7,17 @@ import InventoryAdditionModal from "./inventoryAdditionModal";
 import InventoryRemovalModal from "./inventoryRemovalModal";
 import { Sides } from '../enums/side';
 import {UserActionMessages} from "../enums/userActionMessages";
+import {LiquorInventoryMessages} from "../enums/liquorInventoryMessages";
 
 interface InventoryTableProps{
     data: Array<Drink>;
     side: string;
     setFetchTableData : (fetchTableData: boolean) => void;
+    employee: string
 }
 
 
-const InventoryTable:React.FC<InventoryTableProps> = ({data,  side, setFetchTableData}) => {
+const InventoryTable:React.FC<InventoryTableProps> = ({data,  side, setFetchTableData, employee}) => {
 const [showAddModal, setShowAddModal] = useState(false);
 const [showRemoveModal, setShowRemoveModal] = useState(false);
 const [editingRecord, setEditingRecord ] = useState({
@@ -41,11 +43,10 @@ const add = (record: Drink) => {
     };
 
     const recordEmployeeDeletionAction = async (editingRecord: Drink, id: string) => {
-        //TODO: get employee name on delete
         let today = new Date();
         const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + '-' + today.getHours() + ':' + today.getMinutes();
-        const userDeletion = {
-            employee: "employee",
+        const inventoryDeletion = {
+            employee: employee,
             productId: id,
             vendor: editingRecord.vendor,
             liquorName: editingRecord.name,
@@ -60,15 +61,15 @@ const add = (record: Drink) => {
                     "Accept": "application/json",
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(userDeletion)
+                body: JSON.stringify(inventoryDeletion)
             })
             if (res.ok){
                 message.success(UserActionMessages.liquorDeletionSuccess, 2);
             } else {
                 message.error(UserActionMessages.liquorDeletionError, 2);
             }
-
         } catch (error) {
+            console.log(error);
             message.error(UserActionMessages.liquorDeletionError, 2);
         }
     }
@@ -82,14 +83,14 @@ const add = (record: Drink) => {
                 });
                 if (deleted.ok){
                     setFetchTableData(true);
-                    message.success('Deletion was successful');
+                    message.success(LiquorInventoryMessages.inventoryDeletionSuccess);
                     await recordEmployeeDeletionAction(editingRecord, liquorId);
                 } else{
-                    message.error("Deletion failed")
+                    message.error(LiquorInventoryMessages.inventoryDeletionError);
                 }
             } catch (error){
                 console.log(error);
-                message.error("Deletion failed")
+                message.error(LiquorInventoryMessages.inventoryDeletionError);
             }
         } else if (side == Sides.loungeSide){
             try {
@@ -98,20 +99,20 @@ const add = (record: Drink) => {
                 });
                 if (deleted.ok){
                     setFetchTableData(true);
-                    message.success('Deletion was successful');
+                    message.success(LiquorInventoryMessages.inventoryDeletionSuccess);
                     await recordEmployeeDeletionAction(editingRecord, liquorId);
                 } else{
-                    message.error("Deletion failed")
+                    message.error(LiquorInventoryMessages.inventoryDeletionError);
                 }
             } catch (error){
                 console.log(error);
-                message.error("Deletion failed")
+                message.error(LiquorInventoryMessages.inventoryDeletionError);
             }
         } 
     }
 
-    const onCancelDelete = (e) => {
-        message.warn('Deletion did not occur');
+    const onCancelDelete = () => {
+        message.warn(LiquorInventoryMessages.inventoryDeletionWarning);
     };
 
     const columns = [
@@ -185,8 +186,8 @@ const add = (record: Drink) => {
 
 return (
     <>
-        <InventoryAdditionModal showModal={showAddModal} side={side} setShowModal={setShowAddModal} record={editingRecord} setFetchTableData={setFetchTableData} />
-        <InventoryRemovalModal showModal={showRemoveModal} setShowModal={setShowRemoveModal} record={editingRecord}  side={side}  setFetchTableData={setFetchTableData} />
+        <InventoryAdditionModal showModal={showAddModal} side={side} setShowModal={setShowAddModal} record={editingRecord} setFetchTableData={setFetchTableData} employee={employee} />
+        <InventoryRemovalModal showModal={showRemoveModal} setShowModal={setShowRemoveModal} record={editingRecord}  side={side}  setFetchTableData={setFetchTableData} employee={employee} />
         <Table columns={columns} dataSource={data} />
     </>
 );

@@ -1,14 +1,14 @@
 import {Form, Select} from "antd";
 import React from "react";
 import {employeeData} from "../data/employeeData";
-import styles from "./css/modal.module.css";
+import styles from "./css/sideSelector.module.css"
 
-interface EmployeeSelectorProps{
-    onEmployeeChange : (e: string) => void;
+interface EmployeeIndexSelectorProps{
+    setEmployee: (employee: string) => void;
+    setSelected: (boolean: true) => void;
 }
 
-
-const EmployeeSelector: React.FC<EmployeeSelectorProps> = ({onEmployeeChange}) =>{
+const EmployeeIndexSelector: React.FC<EmployeeIndexSelectorProps> = ({ setEmployee, setSelected}) =>{
     const { Option } = Select;
 
     const employeeNames = [];
@@ -16,30 +16,30 @@ const EmployeeSelector: React.FC<EmployeeSelectorProps> = ({onEmployeeChange}) =
         employeeNames.push(<Option key={employeeData[i].id} label={employeeData[i].name}>{employeeData[i].name}</Option>);
     }
 
-    return (
-        <Form.Item
-            style={{
-                width: 250,
-            }}
-            className={styles.quantityItem} label="Employee" name="employee"  rules={[
+    const onEmployeeChange = (value: string) => {
+        setEmployee(value);
+        setSelected(true);
+    };
 
-            {
-                required: true,
-            },
-        ]} >
+    return (
+        <div className={styles.container}>
+            <div className={styles.label}>Employee: </div>
             <Select
+                style={{
+                    width: 200,
+                }}
                 showSearch
                 onChange={onEmployeeChange}
                 optionFilterProp="children"
-                placeholder="Select a person"
+                placeholder="Select Name"
                 filterOption={(input, option) =>  option.children.toString().toLowerCase().includes(input.toLowerCase())}
             >
                 {employeeNames}
             </Select>
-        </Form.Item>
+        </div>
     )
 
 
 }
 
-export default EmployeeSelector;
+export default EmployeeIndexSelector;

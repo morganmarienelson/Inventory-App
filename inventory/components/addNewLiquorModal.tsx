@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import styles from "./css/modal.module.css"
 import {Vendors} from "../enums/vendors";
 import { Sides } from "../enums/side";
-import EmployeeSelector from "./employeeSelector";
+import EmployeeFormSelector from "./employeeFormSelector";
 import {UserActionMessages} from "../enums/userActionMessages";
 import {LiquorInventoryMessages} from "../enums/liquorInventoryMessages";
 
@@ -13,11 +13,11 @@ interface AddNewLiquorModalProps{
     setShowAddModal : (showAddModal: boolean) => void;
     setFetchTableData : (fetchTableData: boolean) => void;
     side: string;
+    employee: string;
 }
 
-const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setShowAddModal, side, setFetchTableData}) => {
+const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setShowAddModal, side, setFetchTableData, employee}) => {
     const [quantity, setQuantity ] = useState(0);
-    const [employee, setEmployee ] = useState('');
 
     const onModalOkCancel = () => {
         Modal.confirm({
@@ -30,11 +30,9 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
     };
 
     const recordEmployeeAction = async (values: any) => {
-        setShowAddModal(false);
-        setFetchTableData(true);
         let today = new Date();
         const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + '-' + today.getHours() + ':' + today.getMinutes();
-        const userAddition = {
+        const liquorAddition = {
             employee: employee,
             vendor: values.vendor,
             name: values.name,
@@ -49,7 +47,7 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                     "Accept": "application/json",
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(userAddition)
+                body: JSON.stringify(liquorAddition)
             })
             if (res.ok){
                 message.success(UserActionMessages.liquorAdditionSuccess, 2);
@@ -75,6 +73,8 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                 })
                 if (res.ok){
                     message.success(LiquorInventoryMessages.liquorAdditionSuccess, 2);
+                    setShowAddModal(false);
+                    setFetchTableData(true);
                    await recordEmployeeAction(values);
                 } else {
                     message.error(LiquorInventoryMessages.liquorAdditionError);
@@ -94,6 +94,8 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                     body: JSON.stringify(values)
                 })
                 if (res.ok){
+                    setShowAddModal(false);
+                    setFetchTableData(true);
                     message.success(LiquorInventoryMessages.liquorAdditionSuccess, 2);
                     await recordEmployeeAction(values);
                 } else {
@@ -106,9 +108,6 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
         }
     };
 
-    const onEmployeeChange = (value: string) => {
-        setEmployee(value);
-    };
 
     const validateMessages = {
         required: '${label} is required!',
@@ -154,13 +153,15 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                 }]}  >
                     <InputNumber  min={0}  value={quantity} onChange={onQuantityChange}/>
                 </Form.Item>
-                    <EmployeeSelector onEmployeeChange={onEmployeeChange}/>
-                <Form.Item  className={styles.submitBtn}
-                >
-                    <Button type="primary" htmlType="submit" >
-                        Submit
-                    </Button>
-                </Form.Item>
+                <div className={styles.submitContainer}>
+                    By Employee Name
+                    <Form.Item  className={styles.submitBtn}
+                    >
+                        <Button type="primary" htmlType="submit" className={styles.submitBtn} >
+                            Submit
+                        </Button>
+                    </Form.Item>
+                </div>
             </Form>
         </Modal>
     )

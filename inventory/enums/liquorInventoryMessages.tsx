@@ -5,4 +5,7 @@ export enum LiquorInventoryMessages {
     inventoryUpdateWarning = "The quantity of the selected liquor was not changed",
     inventoryUpdateSuccess = "The quantity of this liquor has been updated",
     inventoryUpdateError = "Error updating the quantity of this liquor",
+    inventoryDeletionSuccess = "Liquor deletion was successful",
+    inventoryDeletionError = "Error deleting this liquor from inventory",
+    inventoryDeletionWarning = "Liquor deletion has not occurred",
 }

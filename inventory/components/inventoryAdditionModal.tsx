@@ -2,7 +2,7 @@ import {InputNumber, Modal, Form, Button, Select, message} from "antd";
 import React, { useState} from "react";
 import styles from "./css/modal.module.css";
 import {Sides} from "../enums/side";
-import EmployeeSelector from "./employeeSelector";
+import EmployeeFormSelector from "./employeeFormSelector";
 import {Drink} from "../types/drink";
 import {LiquorInventoryMessages} from "../enums/liquorInventoryMessages";
 import {UserActionMessages} from "../enums/userActionMessages";
@@ -13,16 +13,12 @@ interface InventoryAdditionModalProps{
     record: Drink;
     side: string;
     setFetchTableData : (fetchTableData: boolean) => void;
+    employee: string;
 }
 
-const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModal, setShowModal, record, side, setFetchTableData}) => {
+const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModal, setShowModal, record, side, setFetchTableData, employee}) => {
     const [quantityAdded, setQuantityAdded] = useState(0);
     const [quantityAfter, setQuantityAfter] = useState(record.quantity);
-    const [employee, setEmployee] = useState('');
-
-    const onEmployeeChange = (value: string) => {
-        setEmployee(value)
-    };
 
     const validateMessages = {
         required: '${label} is required!',
@@ -96,9 +92,9 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
                         });
                     if (res.ok) {
                         message.success(LiquorInventoryMessages.inventoryUpdateSuccess, 2);
-                        await recordEmployeeInventoryAdditionAction(record, liquorId);
                         setFetchTableData(true);
                         setShowModal(false);
+                        await recordEmployeeInventoryAdditionAction(record, liquorId);
                     } else {
                         message.error(LiquorInventoryMessages.inventoryUpdateError);
                     }
@@ -121,9 +117,9 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
                     });
                     if (res.ok) {
                         message.success(LiquorInventoryMessages.inventoryUpdateSuccess, 2);
-                        await recordEmployeeInventoryAdditionAction(record, liquorId);
                         setShowModal(false);
                         setFetchTableData(true);
+                        await recordEmployeeInventoryAdditionAction(record, liquorId);
                     } else {
                         message.error(LiquorInventoryMessages.inventoryUpdateError)
                     }
@@ -163,20 +159,14 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
                     Number of Units After Addition: {quantityAfter}
                 </div>
             </div>
-                <div className={styles.unitsAdded}>
-                    <div className={styles.quantityHeader}>
-                       Employee Name:
-                    </div>
-                    <div>
-                    <EmployeeSelector onEmployeeChange={onEmployeeChange}/>
-                    </div>
-                </div>
-                <Form.Item  className={styles.submitBtn}
-                >
-            <Button type="primary" htmlType="submit" className={styles.submitBtn} >
-                Submit
-            </Button>
+                <div className={styles.submitContainer}>
+                    <Form.Item  className={styles.submitBtn}
+                    >
+                        <Button type="primary" htmlType="submit" className={styles.submitBtn} >
+                            Submit
+                        </Button>
                     </Form.Item>
+                </div>
         </Form>
         </Modal>
         )
