@@ -49,6 +49,15 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
             name: record.name,
             quantity: quantityAfter,
         }
+        const userAction = {
+            employee: employee,
+            productId: liquorId,
+            quantityBefore: record.quantity,
+            quantityAdded: quantityAdded,
+            quantityAfter: quantityAfter,
+            date: 4/30,
+            side: side,
+        }
                 if (side == Sides.pubSide){
                 try {
                     const res = await fetch(`http://localhost:3000/api/pubDrinks/${liquorId}`, 
@@ -65,6 +74,19 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
                     console.log(error);
                     message.error("Deletion failed")
                 } 
+                try {
+                    const res = await fetch('http://localhost:3000/api/userActions', {
+                        method: 'POST',
+                        headers: {
+                             "Accept": "application/json",
+                             "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(userAction)
+                    })
+                    message.success("Liquor has been added to the inventory on the Lounge Side", 2);
+                } catch (error) {
+    
+                }
             }
              else if (side == Sides.loungeSide){
                 try {

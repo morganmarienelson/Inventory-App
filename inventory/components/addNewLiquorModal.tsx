@@ -42,7 +42,7 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                 setShowAddModal(false);
                 setEditingRecord(
                     {
-                        id: '',
+                        _id: '',
                         vendor: '',
                         name: '',
                         quantity: 0,
@@ -65,7 +65,7 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                 setShowAddModal(false);
                 setEditingRecord(
                     {
-                        id: '',
+                        _id: '',
                         vendor: '',
                         name: '',
                         quantity: 0,
