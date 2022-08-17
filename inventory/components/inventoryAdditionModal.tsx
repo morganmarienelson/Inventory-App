@@ -159,14 +159,12 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
                     Number of Units After Addition: {quantityAfter}
                 </div>
             </div>
-                <div className={styles.submitContainer}>
-                    <Form.Item  className={styles.submitBtn}
-                    >
-                        <Button type="primary" htmlType="submit" className={styles.submitBtn} >
-                            Submit
-                        </Button>
-                    </Form.Item>
-                </div>
+                <Form.Item  className={styles.submitBtnUpdate}
+                >
+                    <Button type="primary" htmlType="submit" className={styles.submitBtn} >
+                        Submit
+                    </Button>
+                </Form.Item>
         </Form>
         </Modal>
         )

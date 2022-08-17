@@ -4,7 +4,7 @@ import NavBar from './navBar';
 const Layout = ({children}) => (
     <>
     <Head>
-        <title>Joker Inventory</title>
+        <title>Inventory</title>
     </Head>
     <NavBar/>
     {children}

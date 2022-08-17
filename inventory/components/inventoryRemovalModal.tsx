@@ -172,14 +172,12 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
                         Number of Units After Removal: {quantityAfter}
                     </div>
                 </div>
-                <div className={styles.submitContainer}>
-                    <Form.Item  className={styles.submitBtn}
-                    >
-                        <Button type="primary" htmlType="submit" className={styles.submitBtn} >
-                            Submit
-                        </Button>
-                    </Form.Item>
-                </div>
+                <Form.Item  className={styles.submitBtnUpdate}
+                >
+                    <Button type="primary" htmlType="submit" className={styles.submitBtn} >
+                        Submit
+                    </Button>
+                </Form.Item>
             </Form>
         </Modal>
     )

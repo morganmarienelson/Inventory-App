@@ -153,15 +153,12 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                 }]}  >
                     <InputNumber  min={0}  value={quantity} onChange={onQuantityChange}/>
                 </Form.Item>
-                <div className={styles.submitContainer}>
-                    By Employee Name
                     <Form.Item  className={styles.submitBtn}
                     >
                         <Button type="primary" htmlType="submit" className={styles.submitBtn} >
                             Submit
                         </Button>
                     </Form.Item>
-                </div>
             </Form>
         </Modal>
     )
