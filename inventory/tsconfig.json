@@ -25,7 +25,7 @@
     "**/*.tsx"
 ,
     "models/pubDrinksSchema"
-, "pages/api/userActions/index.js"  ],
+, "pages/api/userAdditions/index.js"  ],
   "exclude": [
     "node_modules"
   ]
