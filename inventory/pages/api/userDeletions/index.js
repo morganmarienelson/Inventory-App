@@ -17,8 +17,8 @@ export default async function (req, res){
             break;
             case "POST":
                 try {
-                    const deletionTest = await InventoryDeletion.create(req.body)
-                    res.status(200).json({ success: true, data: deletionTest})
+                    const deletion = await InventoryDeletion.create(req.body)
+                    res.status(200).json({ success: true, data: deletion})
                 } catch (error){
                     res.status(400).json({ success: false})
                 } 

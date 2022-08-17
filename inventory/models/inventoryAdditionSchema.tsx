@@ -23,7 +23,7 @@ const InventoryAdditionSchema = new Schema({
     },
     date: {
         type: Date,
-        required: false,
+        required: true,
     },
     side: {
         type: String,

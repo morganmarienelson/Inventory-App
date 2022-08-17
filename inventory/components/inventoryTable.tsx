@@ -41,14 +41,14 @@ const add = (record: Drink) => {
         var today = new Date();
         const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + '-' + today.getHours() + ':' + today.getMinutes();
         const userDeletion = {
-            employee: "test",
-            quantity: editingRecord.quantity,
+            employee: "employee",
+            productId: liquorId,
             vendor: editingRecord.vendor,
-            name: editingRecord.name,
+            liquorName: editingRecord.name,
+            quantity: editingRecord.quantity,
             date: date,
-            side: side
+            side: side,
         }
-        console.log(userDeletion)
         if (side == Sides.pubSide){
             try {
                 const deleted = await fetch(`http://localhost:3000/api/pubDrinks/${liquorId}`, {

@@ -75,7 +75,7 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
                     message.error("Deletion failed")
                 } 
                 try {
-                    const res = await fetch('http://localhost:3000/api/userActions', {
+                    const res = await fetch('http://localhost:3000/api/userAdditions', {
                         method: 'POST',
                         headers: {
                              "Accept": "application/json",
@@ -101,7 +101,7 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
                     });
                     message.success("The quantity has been updated", 2);
                     try {
-                        const res = await fetch('http://localhost:3000/api/userActions', {
+                        const res = await fetch('http://localhost:3000/api/userAdditions', {
                             method: 'POST',
                             headers: {
                                  "Accept": "application/json",
