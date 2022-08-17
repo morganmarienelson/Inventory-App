@@ -3,29 +3,64 @@ import React, {useState} from "react";
 import styles from "./css/modal.module.css"
 import {Vendors} from "../enums/vendors";
 import { Sides } from "../enums/side";
-import {employeeData} from "../data/employeeData";
-import {Drink} from "../types/drink";
+import EmployeeSelector from "./employeeSelector";
+import {UserActionMessages} from "../enums/userActionMessages";
+import {LiquorInventoryMessages} from "../enums/liquorInventoryMessages";
 
 
 interface AddNewLiquorModalProps{
     showAddModal: boolean;
     setShowAddModal : (showAddModal: boolean) => void;
-    setEditingRecord : (editingRecord: Drink) => void;
+    setFetchTableData : (fetchTableData: boolean) => void;
     side: string;
 }
 
-const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setShowAddModal, side, setEditingRecord}) => {
+const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setShowAddModal, side, setFetchTableData}) => {
     const [quantity, setQuantity ] = useState(0);
+    const [employee, setEmployee ] = useState('');
 
     const onModalOkCancel = () => {
         Modal.confirm({
             title: "Are you sure that you want to close this form? This new liquor has not been added. You did not press submit.",
             onOk: () => {
                 setShowAddModal(false);
-                message.warn("Liquor was not added to the database")
+                message.warn(LiquorInventoryMessages.liquorAdditionWarning)
             },
         });
     };
+
+    const recordEmployeeAction = async (values: any) => {
+        setShowAddModal(false);
+        setFetchTableData(true);
+        let today = new Date();
+        const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + '-' + today.getHours() + ':' + today.getMinutes();
+        const userAddition = {
+            employee: employee,
+            vendor: values.vendor,
+            name: values.name,
+            quantity: values.quantity,
+            date: date,
+            side: side,
+        }
+        try {
+            const res = await fetch('http://localhost:3000/api/liquorAdditions', {
+                method: 'POST',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(userAddition)
+            })
+            if (res.ok){
+                message.success(UserActionMessages.liquorAdditionSuccess, 2);
+            } else{
+                message.error(UserActionMessages.liquorAdditionError, 2);
+            }
+        } catch (error) {
+            console.log(error);
+            message.error(UserActionMessages.liquorAdditionError, 2);
+        }
+    }
 
     const onFinish = async (values: any) => {
         if (side == Sides.pubSide){
@@ -38,18 +73,15 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                     },
                     body: JSON.stringify(values)
                 })
-                message.success("Liquor has been added to the inventory on the Pub Side", 2);
-                setShowAddModal(false);
-                setEditingRecord(
-                    {
-                        _id: '',
-                        vendor: '',
-                        name: '',
-                        quantity: 0,
-                    }
-                );
+                if (res.ok){
+                    message.success(LiquorInventoryMessages.liquorAdditionSuccess, 2);
+                   await recordEmployeeAction(values);
+                } else {
+                    message.error(LiquorInventoryMessages.liquorAdditionError);
+                }
             } catch (error) {
-
+                console.log(error);
+                message.error(LiquorInventoryMessages.liquorAdditionError);
             }
         } else if (side == Sides.loungeSide){
             try {
@@ -61,20 +93,21 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                     },
                     body: JSON.stringify(values)
                 })
-                message.success("Liquor has been added to the inventory on the Lounge Side", 2);
-                setShowAddModal(false);
-                setEditingRecord(
-                    {
-                        _id: '',
-                        vendor: '',
-                        name: '',
-                        quantity: 0,
-                    }
-                );
+                if (res.ok){
+                    message.success(LiquorInventoryMessages.liquorAdditionSuccess, 2);
+                    await recordEmployeeAction(values);
+                } else {
+                    message.error(LiquorInventoryMessages.liquorAdditionError);
+                }
             } catch (error) {
-
+                console.log(error);
+                message.error(LiquorInventoryMessages.liquorAdditionError);
             }
         }
+    };
+
+    const onEmployeeChange = (value: string) => {
+        setEmployee(value);
     };
 
     const validateMessages = {
@@ -121,6 +154,7 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                 }]}  >
                     <InputNumber  min={0}  value={quantity} onChange={onQuantityChange}/>
                 </Form.Item>
+                    <EmployeeSelector onEmployeeChange={onEmployeeChange}/>
                 <Form.Item  className={styles.submitBtn}
                 >
                     <Button type="primary" htmlType="submit" >

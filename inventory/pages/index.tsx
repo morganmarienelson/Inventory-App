@@ -7,34 +7,53 @@ import { useEffect } from "react";
 import { Sides } from "../enums/side";
 import {loungeDrinks} from "../data/loungeDrinks";
 import {pubDrinks} from "../data/pubDrinks";
+import {Drink} from "../types/drink";
+import {message} from "antd";
 
 export default function Index(
 ) {
     const [side, setSide ] = useState('');
+    const [fetchTableData, setFetchTableData ] = useState(false);
     const [showTable, setShowTable ] = useState(false);
-    const [tableData, setTableData] = useState();
-    const [editingRecord, setEditingRecord] = useState({
-        _id: '',
-        vendor: '',
-        name: '',
-        quantity: 0,
-    }
-    );
+    const [tableData, setTableData] = useState([]);
 
     useEffect(() => {
         const setData = async () => {
+            if (fetchTableData) {
             if (side == Sides.loungeSide){
-                const res = await fetch('http://localhost:3000/api/loungeDrinks' )
-                const loungeData  = await res.json()
-         setTableData(loungeData.data);
+                    // try{
+                    // const res = await fetch('http://localhost:3000/api/loungeDrinks' )
+                    // const loungeData  = await res.json()
+                    // if (res.ok){
+                    // setTableData(loungeData.data);
+                    // } else {
+                    //     message.error("Error retrieving Lounge Side data");
+                    // }
+                    // } catch (error) {
+                    //     console.log(error);
+                    //     message.error("Error retrieving Lounge Side data");
+                    // }
+                    setTableData(loungeDrinks);
         } else if (side == Sides.pubSide){
-            const pubRes = await fetch('http://localhost:3000/api/pubDrinks');
-            const pubData = await pubRes.json();
-            setTableData(pubData.data);
-        }
+                // try{
+                // const res = await fetch('http://localhost:3000/api/pubDrinks' )
+                // const pubData  = await res.json()
+                // if (res.ok){
+                // setTableData(pubData.data);
+                // } else {
+                //     message.error("Error retrieving Pub Side data");
+                // }
+                // } catch (error) {
+                //     console.log(error);
+                //     message.error("Error retrieving Pub Side data");
+                // }
+                setTableData(pubDrinks);
+            }
+            setFetchTableData(false);
+            }
     }
         setData();
-    }, [side, editingRecord]);
+    }, [fetchTableData, []]);
 
     return (
    <>
@@ -45,7 +64,7 @@ export default function Index(
            {showTable ? (
            <>
                <div >
-               <AddNewLiquorBtn side={side} setEditingRecord={setEditingRecord}/>
+               <AddNewLiquorBtn side={side} setFetchTableData={setFetchTableData}/>
            </div>
            </>
        ) : (
@@ -54,7 +73,7 @@ export default function Index(
        </div>
        {showTable ? (
            <div className={styles.table}>
-              <InventoryTable data={tableData} editingRecord={editingRecord} setEditingRecord={setEditingRecord} side={side}/>
+              <InventoryTable data={tableData} side={side} setFetchTableData={setFetchTableData}/>
            </div>
        ) : (
            <></>

@@ -2,14 +2,13 @@ import {Button} from "antd";
 import React, {useState} from "react";
 import AddNewLiquorModal from "./addNewLiquorModal";
 import styles from "./css/addBtn.module.css";
-import {Drink} from "../types/drink";
 
 interface AddNewLiquorBtnProps{
     side: string;
-    setEditingRecord : (editingRecord: Drink) => void;
+    setFetchTableData : (fetchTableData: boolean) => void;
 }
 
-const AddNewLiquorBtn: React.FC<AddNewLiquorBtnProps> = ({side, setEditingRecord}) =>{
+const AddNewLiquorBtn: React.FC<AddNewLiquorBtnProps> = ({side, setFetchTableData}) =>{
     const [showAddModal, setShowAddModal] = useState(false)
 
     const onAddBtnClick = () =>{
@@ -18,7 +17,7 @@ const AddNewLiquorBtn: React.FC<AddNewLiquorBtnProps> = ({side, setEditingRecord
 
     return (
         <>
-            <AddNewLiquorModal side={side} showAddModal={showAddModal} setShowAddModal={setShowAddModal} setEditingRecord={setEditingRecord}/>
+            <AddNewLiquorModal side={side} showAddModal={showAddModal} setShowAddModal={setShowAddModal} setFetchTableData={setFetchTableData}/>
         <Button onClick={onAddBtnClick} type="primary" className={styles.btn}>
             <div  className={styles.label}>Add New Liquor</div>
         </Button>

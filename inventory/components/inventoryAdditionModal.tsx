@@ -3,15 +3,19 @@ import React, { useState} from "react";
 import styles from "./css/modal.module.css";
 import {Sides} from "../enums/side";
 import EmployeeSelector from "./employeeSelector";
+import {Drink} from "../types/drink";
+import {LiquorInventoryMessages} from "../enums/liquorInventoryMessages";
+import {UserActionMessages} from "../enums/userActionMessages";
 
 interface InventoryAdditionModalProps{
     showModal: boolean;
     setShowModal : (showUpdate: boolean) => void;
-    record: any;
+    record: Drink;
     side: string;
+    setFetchTableData : (fetchTableData: boolean) => void;
 }
 
-const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModal, setShowModal, record, side}) => {
+const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModal, setShowModal, record, side, setFetchTableData}) => {
     const [quantityAdded, setQuantityAdded] = useState(0);
     const [quantityAfter, setQuantityAfter] = useState(record.quantity);
     const [employee, setEmployee] = useState('');
@@ -28,7 +32,7 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
         Modal.confirm({
             title: "Are you sure that you want to close this form? The addition has not been recorded. You did not press submit.",
             onOk: () => {
-                message.warn("Units of selected liquor was not changed")
+                message.warn(LiquorInventoryMessages.inventoryUpdateWarning)
                 setShowModal(false);
             },
         });
@@ -39,9 +43,39 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
         setQuantityAfter(e + record.quantity);
     }
 
-     const onFinish = async (values: any) => {
-        var today = new Date();
+    const recordEmployeeInventoryAdditionAction = async (record: Drink, id: string) =>{
+        let today = new Date();
         const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + '-' + today.getHours() + ':' + today.getMinutes();
+        const inventoryAddition = {
+            employee: employee,
+            productId: id,
+            quantityBefore: record.quantity,
+            quantityAdded: quantityAdded,
+            quantityAfter: quantityAfter,
+            date: date,
+            side: side,
+        }
+        try {
+            const res = await fetch('http://localhost:3000/api/inventoryAdditions', {
+                method: 'POST',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(inventoryAddition)
+            })
+            if (res.ok){
+                message.success(UserActionMessages.inventoryAdditionSuccess, 2);
+            } else {
+                message.error(UserActionMessages.inventoryAdditionError, 2);
+            }
+        } catch (error) {
+            console.log(error);
+            message.error(UserActionMessages.inventoryAdditionError);
+        }
+    }
+
+     const onFinish = async (values: any) => {
         const liquorId = record._id; 
         const updatedLiquor = {
             _id: liquorId,
@@ -49,43 +83,29 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
             name: record.name,
             quantity: quantityAfter,
         }
-        const userAddition = {
-            employee: employee,
-            productId: liquorId,
-            quantityBefore: record.quantity,
-            quantityAdded: quantityAdded,
-            quantityAfter: quantityAfter,
-            date: date,
-            side: side,
-        }
                 if (side == Sides.pubSide){
                 try {
-                    const res = await fetch(`http://localhost:3000/api/pubDrinks/${liquorId}`, 
-                    {
-                    method: 'PUT',
-                    headers: {
-                        "Accept": "applicattiton/json",
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(updatedLiquor)
-                    });
-                    message.success("The quantity has been updated", 2);
-                } catch (error){
+                    const res = await fetch(`http://localhost:3000/api/pubDrinks/${liquorId}`,
+                        {
+                            method: 'PUT',
+                            headers: {
+                                "Accept": "application/json",
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(updatedLiquor)
+                        });
+                    if (res.ok) {
+                        message.success(LiquorInventoryMessages.inventoryUpdateSuccess, 2);
+                        await recordEmployeeInventoryAdditionAction(record, liquorId);
+                        setFetchTableData(true);
+                        setShowModal(false);
+                    } else {
+                        message.error(LiquorInventoryMessages.inventoryUpdateError);
+                    }
+                }
+                catch (error){
                     console.log(error);
-                    message.error("Deletion failed")
-                } 
-                try {
-                    const res = await fetch('http://localhost:3000/api/userAdditions', {
-                        method: 'POST',
-                        headers: {
-                             "Accept": "application/json",
-                             "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(userAddition)
-                    })
-                    message.success("Employee action has been recorded", 2);
-                } catch (error) {
-                    message.error("Employee action did not record")
+                    message.error(LiquorInventoryMessages.inventoryUpdateError);
                 }
             }
              else if (side == Sides.loungeSide){
@@ -94,31 +114,25 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
                     {
                     method: 'PUT',
                     headers: {
-                        "Accept": "applicattiton/json",
+                        "Accept": "application/json",
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify(updatedLiquor)
                     });
-                    message.success("The quantity has been updated", 2);
-                    try {
-                        const res = await fetch('http://localhost:3000/api/userAdditions', {
-                            method: 'POST',
-                            headers: {
-                                 "Accept": "application/json",
-                                 "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify(userAddition)
-                        })
-                        message.success("Employee action has been recorded", 2);
-                    } catch (error) {
-                        message.error("Employee action did not record")
+                    if (res.ok) {
+                        message.success(LiquorInventoryMessages.inventoryUpdateSuccess, 2);
+                        await recordEmployeeInventoryAdditionAction(record, liquorId);
+                        setShowModal(false);
+                        setFetchTableData(true);
+                    } else {
+                        message.error(LiquorInventoryMessages.inventoryUpdateError)
                     }
-                } catch (error){
+                }
+                catch (error){
                     console.log(error);
-                    message.error("Deletion failed")
-                } 
+                    message.error(LiquorInventoryMessages.inventoryUpdateError)
+                }
             }
-        setShowModal(false)
     };
 
     return (

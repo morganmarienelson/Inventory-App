@@ -5,16 +5,19 @@ import {Drink} from "../types/drink";
 import styles from "./css/modal.module.css";
 import {Sides} from "../enums/side";
 import EmployeeSelector from "./employeeSelector";
+import {LiquorInventoryMessages} from "../enums/liquorInventoryMessages";
+import {UserActionMessages} from "../enums/userActionMessages";
 
 interface InventoryRemovalModalProps {
     showModal: boolean;
     setShowModal: (showUpdate) => void;
     record: any;
     side: string,
+    setFetchTableData : (fetchTableData: boolean) => void;
 }
 
 
-const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal, setShowModal, record, side}) => {
+const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal, setShowModal, record, side, setFetchTableData}) => {
     const [quantityTaken, setQuantityTaken] = useState(0);
     const [quantityAfter, setQuantityAfter] = useState(record.quantity);
     const [employee, setEmployee] = useState('');
@@ -43,7 +46,7 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
         Modal.confirm({
             title: "Are you sure that you want to close this form? The addition has not been recorded. You did not press submit.",
             onOk: () => {
-                message.warn("Units of selected liquor has not been changed")
+                message.warn(LiquorInventoryMessages.inventoryUpdateWarning);
                 setShowModal(false);
             },
         });
@@ -54,24 +57,45 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
         setQuantityAfter(record.quantity - e);
     }
 
-    const onFinish = async (values: any) => {
-        var today = new Date();
+    const recordEmployeeInventoryRemovalAction = async (record: Drink, id: string) =>{
+        let today = new Date();
         const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + '-' + today.getHours() + ':' + today.getMinutes();
-        const liquorId = record._id; 
-        const updatedLiquor = {
-            _id: liquorId,
-            vendor: record.vendor,
-            name: record.name,
-            quantity: quantityAfter,
-        }
-        const userRemoval = {
+        const inventoryRemoval = {
             employee: employee,
-            productId: liquorId,
+            productId: id,
             quantityBefore: record.quantity,
             quantityTaken: quantityTaken,
             quantityAfter: quantityAfter,
             date: date,
             side: side,
+        }
+        try {
+            const res = await fetch('http://localhost:3000/api/inventoryRemovals', {
+                method: 'POST',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(inventoryRemoval)
+            })
+            if (res.ok){
+                message.success(UserActionMessages.inventoryRemovalSuccess, 2);
+            } else {
+                message.error(UserActionMessages.inventoryRemovalError, 2);
+            }
+        } catch (error) {
+            console.log(error);
+            message.error(UserActionMessages.inventoryRemovalError);
+        }
+    }
+
+    const onFinish = async (values: any) => {
+        const liquorId = record._id;
+        const updatedLiquor = {
+            _id: liquorId,
+            vendor: record.vendor,
+            name: record.name,
+            quantity: quantityAfter,
         }
                 if (side == Sides.pubSide){
                 try {
@@ -79,28 +103,22 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
                     {
                     method: 'PUT',
                     headers: {
-                        "Accept": "applicattiton/json",
+                        "Accept": "application/json",
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify(updatedLiquor)
                     });
-                    message.success("The quantity has been updated", 2);
+                    if (res.ok){
+                        message.success(LiquorInventoryMessages.inventoryUpdateSuccess, 2);
+                        setFetchTableData(true);
+                        setShowModal(false);
+                        await recordEmployeeInventoryRemovalAction(record, liquorId);
+                    } else {
+                        message.error(LiquorInventoryMessages.inventoryUpdateError, 2);
+                    }
                 } catch (error){
                     console.log(error);
-                    message.error("Deletion failed")
-                } 
-                try {
-                    const res = await fetch('http://localhost:3000/api/userRemovals', {
-                        method: 'POST',
-                        headers: {
-                             "Accept": "application/json",
-                             "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(userRemoval)
-                    })
-                    message.success("Employee action has been recorded", 2);
-                } catch (error) {
-                    message.error("Employee action did not record")
+                    message.error(LiquorInventoryMessages.inventoryUpdateError, 2);
                 }
             }
              else if (side == Sides.loungeSide){
@@ -109,28 +127,22 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
                     {
                     method: 'PUT',
                     headers: {
-                        "Accept": "applicattiton/json",
+                        "Accept": "application/json",
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify(updatedLiquor)
                     });
-                    message.success("The quantity has been updated", 2);
+                    if (res.ok){
+                        message.success(LiquorInventoryMessages.inventoryUpdateSuccess, 2);
+                        setFetchTableData(true);
+                        setShowModal(false);
+                        await recordEmployeeInventoryRemovalAction(record, liquorId);
+                    } else {
+                        message.error(LiquorInventoryMessages.inventoryUpdateError, 2);
+                    }
                 } catch (error){
                     console.log(error);
-                    message.error("Deletion failed")
-                } 
-                try {
-                    const res = await fetch('http://localhost:3000/api/userRemovals', {
-                        method: 'POST',
-                        headers: {
-                             "Accept": "application/json",
-                             "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify(userRemoval)
-                    })
-                    message.success("Employee action has been recorded", 2);
-                } catch (error) {
-                    message.error("Employee action did not record")
+                    message.error(LiquorInventoryMessages.inventoryUpdateError, 2);
                 }
             }
         setShowModal(false)

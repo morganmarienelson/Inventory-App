@@ -12,7 +12,7 @@ interface SideSelectorProps{
 const SideSelector:React.FC<SideSelectorProps> = ({setSide, setShowTable}) => {
     const { Option } = Select;
 
-    const handleChange = (value) => {
+    const handleChange = (value: string) => {
         setSide(value)
         setShowTable(true);
     };
