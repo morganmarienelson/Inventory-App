@@ -5,20 +5,27 @@ const InventoryDeletionSchema = new Schema({
         type: String,
         required: true,
     },
-    productId: {
+    quantity: {
+        type: Number,
+        required: true,
+    },
+    vendor: {
         type: String,
         required: true,
     },
-    quantityAtDeletion: {
-        type: Number,
+    name: {
+        type: String,
         required: true,
     },
     date: {
         type: Date,
         required: true,
+    },
+    side: {
+        type: String,
+        required: true,
     }
 })
-
 
 const InventoryDeletion = models.InventoryDeletion || model('InventoryDeletion', InventoryDeletionSchema);
 

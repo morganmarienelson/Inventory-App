@@ -15,7 +15,6 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
     const [quantityAdded, setQuantityAdded] = useState(0);
     const [quantityAfter, setQuantityAfter] = useState(record.quantity);
     const [employee, setEmployee] = useState('');
-    const [date, setDate] = useState('');
 
     const onEmployeeChange = (value: string) => {
         setEmployee(value)
@@ -50,7 +49,7 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
             name: record.name,
             quantity: quantityAfter,
         }
-        const userAction = {
+        const userAddition = {
             employee: employee,
             productId: liquorId,
             quantityBefore: record.quantity,
@@ -82,7 +81,7 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
                              "Accept": "application/json",
                              "Content-Type": "application/json"
                         },
-                        body: JSON.stringify(userAction)
+                        body: JSON.stringify(userAddition)
                     })
                     message.success("Employee action has been recorded", 2);
                 } catch (error) {
@@ -108,7 +107,7 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
                                  "Accept": "application/json",
                                  "Content-Type": "application/json"
                             },
-                            body: JSON.stringify(userAction)
+                            body: JSON.stringify(userAddition)
                         })
                         message.success("Employee action has been recorded", 2);
                     } catch (error) {

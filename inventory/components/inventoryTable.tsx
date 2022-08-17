@@ -36,9 +36,19 @@ const add = (record: Drink) => {
     };
 
     const deleteLiquor = async () => {
-        console.log(editingRecord._id);
+        //TODO: get employee name on delete
         const liquorId = editingRecord._id; 
-        console.log(liquorId);
+        var today = new Date();
+        const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + '-' + today.getHours() + ':' + today.getMinutes();
+        const userDeletion = {
+            employee: "test",
+            quantity: editingRecord.quantity,
+            vendor: editingRecord.vendor,
+            name: editingRecord.name,
+            date: date,
+            side: side
+        }
+        console.log(userDeletion)
         if (side == Sides.pubSide){
             try {
                 const deleted = await fetch(`http://localhost:3000/api/pubDrinks/${liquorId}`, {
@@ -49,6 +59,19 @@ const add = (record: Drink) => {
                 console.log(error);
                 message.error("Deletion failed")
             } 
+            try {
+                const res = await fetch('http://localhost:3000/api/userDeletions', {
+                    method: 'POST',
+                    headers: {
+                         "Accept": "application/json",
+                         "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(userDeletion)
+                })
+                message.success("Employee action has been recorded", 2);
+            } catch (error) {
+                message.error("Employee action did not record")
+            }
 
         } else if (side == Sides.loungeSide){
             try {
@@ -60,6 +83,19 @@ const add = (record: Drink) => {
                 console.log(error);
                 message.error("Deletion failed")
             } 
+            try {
+                const res = await fetch('http://localhost:3000/api/userDeletions', {
+                    method: 'POST',
+                    headers: {
+                         "Accept": "application/json",
+                         "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(userDeletion)
+                })
+                message.success("Employee action has been recorded", 2);
+            } catch (error) {
+                message.error("Employee action did not record")
+            }
 
         } 
     }
