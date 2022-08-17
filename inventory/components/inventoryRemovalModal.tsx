@@ -55,13 +55,23 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
     }
 
     const onFinish = async (values: any) => {
-        console.log(values);
+        var today = new Date();
+        const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + '-' + today.getHours() + ':' + today.getMinutes();
         const liquorId = record._id; 
         const updatedLiquor = {
             _id: liquorId,
             vendor: record.vendor,
             name: record.name,
             quantity: quantityAfter,
+        }
+        const userRemoval = {
+            employee: employee,
+            productId: liquorId,
+            quantityBefore: record.quantity,
+            quantityTaken: quantityTaken,
+            quantityAfter: quantityAfter,
+            date: date,
+            side: side,
         }
                 if (side == Sides.pubSide){
                 try {
@@ -79,6 +89,19 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
                     console.log(error);
                     message.error("Deletion failed")
                 } 
+                try {
+                    const res = await fetch('http://localhost:3000/api/userRemovals', {
+                        method: 'POST',
+                        headers: {
+                             "Accept": "application/json",
+                             "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(userRemoval)
+                    })
+                    message.success("Employee action has been recorded", 2);
+                } catch (error) {
+                    message.error("Employee action did not record")
+                }
             }
              else if (side == Sides.loungeSide){
                 try {
@@ -96,6 +119,19 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
                     console.log(error);
                     message.error("Deletion failed")
                 } 
+                try {
+                    const res = await fetch('http://localhost:3000/api/userRemovals', {
+                        method: 'POST',
+                        headers: {
+                             "Accept": "application/json",
+                             "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(userRemoval)
+                    })
+                    message.success("Employee action has been recorded", 2);
+                } catch (error) {
+                    message.error("Employee action did not record")
+                }
             }
         setShowModal(false)
     };

@@ -5,11 +5,7 @@ const InventoryRemovalSchema = new Schema({
         type: String,
         required: true,
     },
-    vendor: {
-        type: String,
-        required: true,
-    },
-    name: {
+    productId: {
         type: String,
         required: true,
     },
@@ -23,6 +19,14 @@ const InventoryRemovalSchema = new Schema({
     },
     quantityAfter: {
         type: Number,
+        required: true,
+    },
+    date: {
+        type: Date,
+        required: false,
+    },
+    side: {
+        type: String,
         required: true,
     }
 })
