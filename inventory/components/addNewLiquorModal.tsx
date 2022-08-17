@@ -4,15 +4,17 @@ import styles from "./css/modal.module.css"
 import {Vendors} from "../enums/vendors";
 import { Sides } from "../enums/side";
 import {employeeData} from "../data/employeeData";
+import {Drink} from "../types/drink";
 
 
 interface AddNewLiquorModalProps{
     showAddModal: boolean;
     setShowAddModal : (showAddModal: boolean) => void;
+    setEditingRecord : (editingRecord: Drink) => void;
     side: string;
 }
 
-const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setShowAddModal, side}) => {
+const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setShowAddModal, side, setEditingRecord}) => {
     const [quantity, setQuantity ] = useState(0);
 
     const onModalOkCancel = () => {
@@ -38,11 +40,16 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                 })
                 message.success("Liquor has been added to the inventory on the Pub Side", 2);
                 setShowAddModal(false);
+                setEditingRecord(
+                    {
+                        id: '',
+                        vendor: '',
+                        name: '',
+                        quantity: 0,
+                    }
+                );
             } catch (error) {
-                //TODO: handle the frontend display of non unique name
-                message.error("A liquor with this name already exists in the database. Please enter a different name or look for this liquor in the inventory table.", 2);
-                //TODO: handle the frontend display of any others errors
-                message.error("Something went wrong. This liquor could not be added", 2);
+
             }
         } else if (side == Sides.loungeSide){
             try {
@@ -56,11 +63,16 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
                 })
                 message.success("Liquor has been added to the inventory on the Lounge Side", 2);
                 setShowAddModal(false);
+                setEditingRecord(
+                    {
+                        id: '',
+                        vendor: '',
+                        name: '',
+                        quantity: 0,
+                    }
+                );
             } catch (error) {
-                //TODO: handle the frontend display of non unique name
-                message.error("A liquor with this name already exists in the database. Please enter a different name or look for this liquor in the inventory table.", 2);
-                //TODO: handle the frontend display of any others errors
-                message.error("Something went wrong. This liquor could not be added", 2);
+
             }
         }
     };

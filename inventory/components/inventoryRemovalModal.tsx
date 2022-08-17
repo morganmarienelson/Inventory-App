@@ -9,12 +9,14 @@ import EmployeeSelector from "./employeeSelector";
 interface InventoryRemovalModalProps {
     showModal: boolean;
     setShowModal: (showUpdate) => void;
-    record: Drink;
+    record: any;
+    side: string,
 }
 
-const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal, setShowModal, record}) => {
+
+const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal, setShowModal, record, side}) => {
     const [quantityTaken, setQuantityTaken] = useState(0);
-    const [quantityAfter, setQuantityAfter] = useState(0);
+    const [quantityAfter, setQuantityAfter] = useState(record.quantity);
     const [employee, setEmployee] = useState('');
 
     const onEmployeeChange = (value: string) => {
@@ -53,11 +55,49 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
     }
 
     const onFinish = async (values: any) => {
-        //TODO: add an update to current drink record, add removal action
-        setQuantityAfter(record.quantity);
-        setQuantityTaken(0);
-        setShowModal(false);
-        message.success("The quantity has been updated", 2);
+        console.log(values);
+        const liquorId = record._id; 
+        const updatedLiquor = {
+            _id: liquorId,
+            vendor: record.vendor,
+            name: record.name,
+            quantity: quantityAfter,
+        }
+                if (side == Sides.pubSide){
+                try {
+                    const res = await fetch(`http://localhost:3000/api/pubDrinks/${liquorId}`, 
+                    {
+                    method: 'PUT',
+                    headers: {
+                        "Accept": "applicattiton/json",
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(updatedLiquor)
+                    });
+                    message.success("The quantity has been updated", 2);
+                } catch (error){
+                    console.log(error);
+                    message.error("Deletion failed")
+                } 
+            }
+             else if (side == Sides.loungeSide){
+                try {
+                    const res = await fetch(`http://localhost:3000/api/loungeDrinks/${liquorId}`, 
+                    {
+                    method: 'PUT',
+                    headers: {
+                        "Accept": "applicattiton/json",
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(updatedLiquor)
+                    });
+                    message.success("The quantity has been updated", 2);
+                } catch (error){
+                    console.log(error);
+                    message.error("Deletion failed")
+                } 
+            }
+        setShowModal(false)
     };
 
     return (

@@ -1,25 +1,25 @@
 import 'antd/dist/antd.css';
-import React, { useState} from "react";
+import React, { useEffect, useState} from "react";
 import { Select, Space, Table, Typography, Popconfirm, message} from 'antd';
 import {Drink} from "../types/drink";
 import {Vendors } from "../enums/vendors";
 import InventoryAdditionModal from "./inventoryAdditionModal";
 import InventoryRemovalModal from "./inventoryRemovalModal";
 import {employeeData} from "../data/employeeData";
+import { Sides } from '../enums/side';
 
 interface InventoryTableProps{
     data: Array<Drink>;
+    editingRecord: Drink;
+    setEditingRecord : (editingRecord: Drink) => void;
+    side: string;
 }
 
 
-const InventoryTable:React.FC<InventoryTableProps> = ({data}) => {
+const InventoryTable:React.FC<InventoryTableProps> = ({data, setEditingRecord, editingRecord, side}) => {
 const [showAddModal, setShowAddModal] = useState(false);
 const [showRemoveModal, setShowRemoveModal] = useState(false);
-const [editingRecord, setEditingRecord] = useState({
-    vendor: '',
-    name: '',
-    quantity: 0,
-} as Drink);
+
 
 const add = (record: Drink) => {
     setEditingRecord(record);
@@ -31,10 +31,37 @@ const add = (record: Drink) => {
         setShowRemoveModal(true);
     };
 
+    const prepareDelete = (record: Drink) => {
+        setEditingRecord(record);
+    };
 
+    const deleteLiquor = async () => {
+        console.log(editingRecord._id);
+        const liquorId = editingRecord._id; 
+        console.log(liquorId);
+        if (side == Sides.pubSide){
+            try {
+                const deleted = await fetch(`http://localhost:3000/api/pubDrinks/${liquorId}`, {
+                    method: "Delete"
+                });
+                message.success('Deletion was successful');
+            } catch (error){
+                console.log(error);
+                message.error("Deletion failed")
+            } 
 
-    const deleteLiquor = (e: any) => {
-        message.success('Deletion was successful');
+        } else if (side == Sides.loungeSide){
+            try {
+                const deleted = await fetch(`http://localhost:3000/api/loungeDrinks/${liquorId}`, {
+                    method: "Delete"
+                });
+                message.success('Deletion was successful');
+            } catch (error){
+                console.log(error);
+                message.error("Deletion failed")
+            } 
+
+        } 
     }
 
     const onCancelDelete = (e) => {
@@ -93,7 +120,7 @@ const add = (record: Drink) => {
                         <Typography.Link onClick={() => remove(record)}>
                             Remove
                         </Typography.Link>
-                        <Typography.Link >
+                        <Typography.Link  onClick={() => prepareDelete(record)}> 
                             <Popconfirm
                                 title="Are you sure to delete this liquor?"
                                 onConfirm={deleteLiquor}
@@ -113,8 +140,8 @@ const add = (record: Drink) => {
 
 return (
     <>
-        <InventoryAdditionModal showModal={showAddModal} setShowModal={setShowAddModal} record={editingRecord} />
-        <InventoryRemovalModal showModal={showRemoveModal} setShowModal={setShowRemoveModal} record={editingRecord} />
+        <InventoryAdditionModal showModal={showAddModal} side={side} setShowModal={setShowAddModal} record={editingRecord} />
+        <InventoryRemovalModal showModal={showRemoveModal} setShowModal={setShowRemoveModal} record={editingRecord}  side={side}  />
         <Table columns={columns} dataSource={data} />
     </>
 );

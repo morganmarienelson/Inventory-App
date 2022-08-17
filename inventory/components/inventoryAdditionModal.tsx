@@ -1,21 +1,19 @@
 import {InputNumber, Modal, Form, Button, Select, message} from "antd";
 import React, {useEffect, useState} from "react";
-import {Drink} from "../types/drink";
 import styles from "./css/modal.module.css";
 import {Sides} from "../enums/side";
-import {loungeDrinks} from "../data/loungeDrinks";
-import {pubDrinks} from "../data/pubDrinks";
 import EmployeeSelector from "./employeeSelector";
 
 interface InventoryAdditionModalProps{
     showModal: boolean;
-    setShowModal : (showUpdate) => void;
-    record: Drink;
+    setShowModal : (showUpdate: boolean) => void;
+    record: any;
+    side: string;
 }
 
-const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModal, setShowModal, record}) => {
+const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModal, setShowModal, record, side}) => {
     const [quantityAdded, setQuantityAdded] = useState(0);
-    const [quantityAfter, setQuantityAfter] = useState(0);
+    const [quantityAfter, setQuantityAfter] = useState(record.quantity);
     const [employee, setEmployee] = useState('');
 
     const onEmployeeChange = (value: string) => {
@@ -43,9 +41,49 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
 
      const onFinish = async (values: any) => {
         console.log(values);
-        //TODO: add an update to current drink record, add addition action
+        console.log(side);
+        const liquorId = record._id; 
+        const updatedLiquor = {
+            _id: liquorId,
+            vendor: record.vendor,
+            name: record.name,
+            quantity: quantityAfter,
+        }
+                if (side == Sides.pubSide){
+                try {
+                    const res = await fetch(`http://localhost:3000/api/pubDrinks/${liquorId}`, 
+                    {
+                    method: 'PUT',
+                    headers: {
+                        "Accept": "applicattiton/json",
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(updatedLiquor)
+                    });
+                    message.success("The quantity has been updated", 2);
+                } catch (error){
+                    console.log(error);
+                    message.error("Deletion failed")
+                } 
+            }
+             else if (side == Sides.loungeSide){
+                try {
+                    const res = await fetch(`http://localhost:3000/api/loungeDrinks/${liquorId}`, 
+                    {
+                    method: 'PUT',
+                    headers: {
+                        "Accept": "applicattiton/json",
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(updatedLiquor)
+                    });
+                    message.success("The quantity has been updated", 2);
+                } catch (error){
+                    console.log(error);
+                    message.error("Deletion failed")
+                } 
+            }
         setShowModal(false)
-         message.success("The quantity has been updated", 2);
     };
 
     return (

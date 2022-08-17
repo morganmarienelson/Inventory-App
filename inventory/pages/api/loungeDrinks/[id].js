@@ -1,5 +1,5 @@
 import connectMongo from '../../../utils/connectMongo'
-import LoungeDrink from '../../../models/pubDrinksSchema'
+import LoungeDrink from '../../../models/loungeDrinksSchema'
 
 export default async function (req, res){
     await connectMongo();
@@ -40,9 +40,9 @@ export default async function (req, res){
                 break;
                 case 'DELETE':
                     try {
-                        const deletedNote = await LoungeDrink.deleteOne({_id: id});
+                        const deleted = await LoungeDrink.deleteOne({_id: id});
     
-                        if (!deletedNote){
+                        if (!deleted){
                             return res.status(400).json({ success: false})
                         }
                         res.status(200).json({ success: true, data: {}})
