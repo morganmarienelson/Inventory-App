@@ -1,5 +1,5 @@
 import {InputNumber, Modal, Form, Button, Select, message} from "antd";
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 import styles from "./css/modal.module.css";
 import {Sides} from "../enums/side";
 import EmployeeSelector from "./employeeSelector";
@@ -15,6 +15,7 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
     const [quantityAdded, setQuantityAdded] = useState(0);
     const [quantityAfter, setQuantityAfter] = useState(record.quantity);
     const [employee, setEmployee] = useState('');
+    const [date, setDate] = useState('');
 
     const onEmployeeChange = (value: string) => {
         setEmployee(value)
@@ -40,8 +41,8 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
     }
 
      const onFinish = async (values: any) => {
-        console.log(values);
-        console.log(side);
+        var today = new Date();
+        const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + '-' + today.getHours() + ':' + today.getMinutes();
         const liquorId = record._id; 
         const updatedLiquor = {
             _id: liquorId,
@@ -55,7 +56,7 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
             quantityBefore: record.quantity,
             quantityAdded: quantityAdded,
             quantityAfter: quantityAfter,
-            date: 4/30,
+            date: date,
             side: side,
         }
                 if (side == Sides.pubSide){
@@ -83,9 +84,9 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
                         },
                         body: JSON.stringify(userAction)
                     })
-                    message.success("Liquor has been added to the inventory on the Lounge Side", 2);
+                    message.success("Employee action has been recorded", 2);
                 } catch (error) {
-    
+                    message.error("Employee action did not record")
                 }
             }
              else if (side == Sides.loungeSide){
@@ -100,6 +101,19 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
                     body: JSON.stringify(updatedLiquor)
                     });
                     message.success("The quantity has been updated", 2);
+                    try {
+                        const res = await fetch('http://localhost:3000/api/userActions', {
+                            method: 'POST',
+                            headers: {
+                                 "Accept": "application/json",
+                                 "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(userAction)
+                        })
+                        message.success("Employee action has been recorded", 2);
+                    } catch (error) {
+                        message.error("Employee action did not record")
+                    }
                 } catch (error){
                     console.log(error);
                     message.error("Deletion failed")
