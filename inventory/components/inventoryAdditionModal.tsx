@@ -2,15 +2,14 @@ import {InputNumber, Modal, Form, Button, Select, message} from "antd";
 import React, { useState} from "react";
 import styles from "./css/modal.module.css";
 import {Sides} from "../enums/side";
-import EmployeeFormSelector from "./employeeFormSelector";
-import {Drink} from "../types/drink";
+import {DrinkType} from "../types/drinkType";
 import {LiquorInventoryMessages} from "../enums/liquorInventoryMessages";
 import {UserActionMessages} from "../enums/userActionMessages";
 
 interface InventoryAdditionModalProps{
     showModal: boolean;
     setShowModal : (showUpdate: boolean) => void;
-    record: Drink;
+    record: DrinkType;
     side: string;
     setFetchTableData : (fetchTableData: boolean) => void;
     employee: string;
@@ -39,7 +38,7 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
         setQuantityAfter(e + record.quantity);
     }
 
-    const recordEmployeeInventoryAdditionAction = async (record: Drink, id: string) =>{
+    const recordEmployeeInventoryAdditionAction = async (record: DrinkType, id: string) =>{
         let today = new Date();
         const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + '-' + today.getHours() + ':' + today.getMinutes();
         const inventoryAddition = {

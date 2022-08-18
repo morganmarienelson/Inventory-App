@@ -1,10 +1,9 @@
 import {InputNumber, Modal, Form, Button, Select, message} from "antd";
 import React, { useState} from "react";
 import emailjs from 'emailjs-com';
-import {Drink} from "../types/drink";
+import {DrinkType} from "../types/drinkType";
 import styles from "./css/modal.module.css";
 import {Sides} from "../enums/side";
-import EmployeeFormSelector from "./employeeFormSelector";
 import {LiquorInventoryMessages} from "../enums/liquorInventoryMessages";
 import {UserActionMessages} from "../enums/userActionMessages";
 
@@ -54,7 +53,7 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
         setQuantityAfter(record.quantity - e);
     }
 
-    const recordEmployeeInventoryRemovalAction = async (record: Drink, id: string) =>{
+    const recordEmployeeInventoryRemovalAction = async (record: DrinkType, id: string) =>{
         let today = new Date();
         const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + '-' + today.getHours() + ':' + today.getMinutes();
         const inventoryRemoval = {

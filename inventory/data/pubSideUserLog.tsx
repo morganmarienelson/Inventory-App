@@ -1,4 +1,4 @@
-export const InventoryLogData = [
+export const PubSideUserLog = [
     {
         employeeName: "Adam",
         employeeAction: "Liquor Deletion",

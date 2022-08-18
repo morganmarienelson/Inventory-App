@@ -3,7 +3,6 @@ import React, {useState} from "react";
 import styles from "./css/modal.module.css"
 import {Vendors} from "../enums/vendors";
 import { Sides } from "../enums/side";
-import EmployeeFormSelector from "./employeeFormSelector";
 import {UserActionMessages} from "../enums/userActionMessages";
 import {LiquorInventoryMessages} from "../enums/liquorInventoryMessages";
 

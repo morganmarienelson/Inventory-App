@@ -1,6 +1,6 @@
 import {Form, Select} from "antd";
 import React from "react";
-import {employeeData} from "../data/employeeData";
+import {EmployeeNames} from "../data/employeeNames";
 import styles from "./css/sideSelector.module.css"
 
 interface EmployeeIndexSelectorProps{
@@ -12,8 +12,8 @@ const EmployeeIndexSelector: React.FC<EmployeeIndexSelectorProps> = ({ setEmploy
     const { Option } = Select;
 
     const employeeNames = [];
-    for (let i = 0; i < employeeData.length; i++) {
-        employeeNames.push(<Option key={employeeData[i].id} label={employeeData[i].name}>{employeeData[i].name}</Option>);
+    for (let i = 0; i < EmployeeNames.length; i++) {
+        employeeNames.push(<Option key={EmployeeNames[i].id} label={EmployeeNames[i].name}>{EmployeeNames[i].name}</Option>);
     }
 
     const onEmployeeChange = (value: string) => {

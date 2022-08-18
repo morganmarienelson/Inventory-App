@@ -1,4 +1,4 @@
- export interface InventoryLogDataType {
+ export interface InventoryLogType {
      employeeName: String,
      employeeAction: String,
      vendor: String,

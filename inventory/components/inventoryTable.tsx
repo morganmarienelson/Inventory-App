@@ -1,7 +1,7 @@
 import 'antd/dist/antd.css';
 import React, { useState} from "react";
 import { Space, Table, Typography, Popconfirm, message} from 'antd';
-import {Drink} from "../types/drink";
+import {DrinkType} from "../types/drinkType";
 import {Vendors } from "../enums/vendors";
 import InventoryAdditionModal from "./inventoryAdditionModal";
 import InventoryRemovalModal from "./inventoryRemovalModal";
@@ -10,7 +10,7 @@ import {UserActionMessages} from "../enums/userActionMessages";
 import {LiquorInventoryMessages} from "../enums/liquorInventoryMessages";
 
 interface InventoryTableProps{
-    data: Array<Drink>;
+    data: Array<DrinkType>;
     side: string;
     setFetchTableData : (fetchTableData: boolean) => void;
     employee: string
@@ -28,21 +28,21 @@ const [editingRecord, setEditingRecord ] = useState({
 })
 
 
-const add = (record: Drink) => {
+const add = (record: DrinkType) => {
     setEditingRecord(record);
     setShowAddModal(true);
 };
 
-    const remove = (record: Drink) => {
+    const remove = (record: DrinkType) => {
         setEditingRecord(record);
         setShowRemoveModal(true);
     };
 
-    const prepareDelete = (record: Drink) => {
+    const prepareDelete = (record: DrinkType) => {
         setEditingRecord(record);
     };
 
-    const recordEmployeeDeletionAction = async (editingRecord: Drink, id: string) => {
+    const recordEmployeeDeletionAction = async (editingRecord: DrinkType, id: string) => {
         let today = new Date();
         const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate() + '-' + today.getHours() + ':' + today.getMinutes();
         const inventoryDeletion = {

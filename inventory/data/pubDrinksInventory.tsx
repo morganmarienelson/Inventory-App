@@ -1,4 +1,4 @@
-export const pubDrinks = [
+export const pubDrinksInventory = [
     {
         vendor: 'General Beverage',
         name: '99 Proof Butterscotch ',

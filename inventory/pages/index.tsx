@@ -5,8 +5,8 @@ import AddNewLiquorBtn from "../components/addNewLiquorBtn";
 import styles from "../styles/Home.module.css"
 import { useEffect } from "react";
 import { Sides } from "../enums/side";
-import {loungeDrinks} from "../data/loungeDrinks";
-import {pubDrinks} from "../data/pubDrinks";
+import {loungeDrinksInventory} from "../data/loungeDrinksInventory";
+import {pubDrinksInventory} from "../data/pubDrinksInventory";
 import EmployeeIndexSelector from "../components/employerIndexSelector";
 
 export default function Index(
@@ -34,7 +34,7 @@ export default function Index(
                     //     console.log(error);
                     //     message.error("Error retrieving Lounge Side data");
                     // }
-                    setTableData(loungeDrinks);
+                    setTableData(loungeDrinksInventory);
                 } else if (side == Sides.pubSide) {
                     // try{
                     // const res = await fetch('http://localhost:3000/api/pubDrinks' )
@@ -48,7 +48,7 @@ export default function Index(
                     //     console.log(error);
                     //     message.error("Error retrieving Pub Side data");
                     // }
-                    setTableData(pubDrinks);
+                    setTableData(pubDrinksInventory);
                 }
             }
             setFetchTableData(false);
