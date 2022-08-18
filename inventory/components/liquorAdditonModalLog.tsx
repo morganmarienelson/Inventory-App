@@ -9,6 +9,8 @@ interface LiquorAdditionModalLogProps{
     record: LiquorAdditionLogType;
 }
 
+//push
+
 const LiquorAdditionModalLog: React.FC<LiquorAdditionModalLogProps> = ({showModal, setShowModal, record}) => {
 
     const onModalOkCancel = () => {
