@@ -1,18 +1,18 @@
 export const EmployeeNames = [
     {
-        name: 'Adam',
+        liquorName: 'Adam',
         id: 1,
     },
     {
-        name: 'Bernie',
+        liquorName: 'Bernie',
         id: 2,
     },
     {
-        name: 'Carol',
+        liquorName: 'Carol',
         id: 3,
     },
     {
-        name: 'Derrick',
+        liquorName: 'Derrick',
         id: 4,
     },
 

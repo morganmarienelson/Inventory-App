@@ -9,7 +9,7 @@ import { EmployeeNames} from "../data/employeeNames";
 import {PubDrinkNames} from "../data/pubDrinksNames";
 import SideSelector from "../components/selectors/sideSelecter";
 import MonthSelecter from "../components/selectors/monthSelecter";
-import InventoryAdditionModalLog from "../components/logModals/inventoryAdditionModaLogl";
+import InventoryAdditionModalLog from "../components/logModals/inventoryAdditionModaLog";
 import {EmployeeInventoryAdditionLog} from "../data/employeeInventoryAdditionLog";
 import {InventoryAdditionLogType} from "../types/inventoryAdditionLogType";
 import {EmployeeInventoryRemovalLog} from "../data/employeeInventoryRemovalLog";
@@ -24,7 +24,7 @@ import LiquorAdditionModalLog from "../components/logModals/liquorAdditonModalLo
 import {PubSideUserLog} from "../data/pubSideUserLog";
 import {LoungeSideUserLog} from "../data/loungeSideUserLog";
 import {Sides} from "../enums/side";
-import DaySelector from "../components/daySelector";
+import DaySelector from "../components/selectors/daySelector";
 import {LoungeDrinkNames} from "../data/loungeDrinkNames";
 
 const Log = () => {
@@ -48,24 +48,24 @@ const Log = () => {
             if (showInventoryTable){
                 EmployeeNames.forEach(function (emp) {
                     const empNameFilter = {
-                        text: `${emp.name}`,
-                        value: `${emp.name}`,
+                        text: `${emp.liquorName}`,
+                        value: `${emp.liquorName}`,
                     }
                     empNameFilters.push(empNameFilter);
                 });
                 if (side == Sides.pubSide){
                     PubDrinkNames.forEach(function (name) {
                         const liquorNameFilter = {
-                            text: `${name.name}`,
-                            value: `${name.name}`,
+                            text: `${name.liquorName}`,
+                            value: `${name.liquorName}`,
                         }
                         liqNameFilters.push(liquorNameFilter)
                     });
                 } else if  (side == Sides.loungeSide){
                     LoungeDrinkNames.forEach(function (name) {
                         const liquorNameFilter = {
-                            text: `${name.name}`,
-                            value: `${name.name}`,
+                            text: `${name.liquorName}`,
+                            value: `${name.liquorName}`,
                         }
                         liqNameFilters.push(liquorNameFilter)
                     });
@@ -239,13 +239,37 @@ const Log = () => {
         },
     ];
 
+    const onSelectedDate = (date:moment.Moment, dateString: string) => {
+        if (dateString != null){
+            let tempArray = [];
+            setTableData(tempArray)
+            let i = 0
+            if (side == Sides.pubSide){
+                PubSideUserLog.forEach(function (data) {
+                    if (data.date.includes(dateString)){
+                        tempArray[i] = data;
+                        i++;
+                    }
+                });
+            } else if (side == Sides.loungeSide){
+                LoungeSideUserLog.forEach(function (data) {
+                    if (data.date.includes(dateString)){
+                        tempArray[i] = data;
+                        i++;
+                    }
+                });
+            }
+            setTableData(tempArray);
+        }
+    };
+
     return (
         <>
             <div className={styles.headers}>
                 <div className={styles.selectors}>
                     <SideSelector setSide={setSide} setSelected={setSideSelected} setFetchTableData={setShowInventoryTable}/>
-                    <MonthSelecter setTableData={setTableData} side={side}/>
-                    <DaySelector setTableData={setTableData} side={side}/>
+                    <MonthSelecter  onSelectedDate={onSelectedDate}/>
+                    <DaySelector onSelectedDate={onSelectedDate}/>
                 </div>
             </div>
             {showInventoryTable ? (

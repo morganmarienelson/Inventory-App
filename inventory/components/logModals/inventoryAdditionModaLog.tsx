@@ -1,15 +1,15 @@
 import {Modal, Table} from "antd";
 import React from "react";
 import styles from "../css/modal.module.css";
-import {InventoryRemovalLogType} from "../../types/inventoryRemovalLogType";
+import {InventoryAdditionLogType} from "../../types/inventoryAdditionLogType";
 
-interface InventoryRemovalModalLogProps{
+interface InventoryAdditionModalLogProps{
     showModal: boolean;
     setShowModal : (showUpdate: boolean) => void;
-    record: InventoryRemovalLogType;
+    record: InventoryAdditionLogType;
 }
 
-const InventoryRemovalModalLog: React.FC<InventoryRemovalModalLogProps> = ({showModal, setShowModal, record}) => {
+const InventoryAdditionModalLog: React.FC<InventoryAdditionModalLogProps> = ({showModal, setShowModal, record}) => {
 
     const onModalOkCancel = () => {
         setShowModal(false);
@@ -18,7 +18,7 @@ const InventoryRemovalModalLog: React.FC<InventoryRemovalModalLogProps> = ({show
     const dataSource = [
         {
             quantityBefore: record.quantityBefore,
-            quantityRemoved: record.quantityRemoved,
+            quantityAdded: record.quantityAdded,
             quantityAfter: record.quantityAfter,
         },
     ];
@@ -30,9 +30,9 @@ const InventoryRemovalModalLog: React.FC<InventoryRemovalModalLogProps> = ({show
             key: 'quantityBefore',
         },
         {
-            title: 'Units Removed',
-            dataIndex: 'quantityRemoved',
-            key: 'quantityRemoved',
+            title: 'Units Added',
+            dataIndex: 'quantityAdded',
+            key: 'quantityAdded',
         },
         {
             title: 'Quantity After',
@@ -43,7 +43,7 @@ const InventoryRemovalModalLog: React.FC<InventoryRemovalModalLogProps> = ({show
 
     return (
         <Modal visible={showModal} onCancel={onModalOkCancel} onOk={onModalOkCancel} destroyOnClose={true}>
-            <div className={styles.liquorName}>Inventory Removal </div>
+            <div className={styles.liquorName}>Inventory Addition </div>
             <div className={styles.liquorName}>{record.liquorName} </div>
             <div className={styles.inventoryContainer}>
                 <div className={styles.nameDate}>
@@ -51,10 +51,10 @@ const InventoryRemovalModalLog: React.FC<InventoryRemovalModalLogProps> = ({show
                 </div>
             </div>
             <div className={styles.table}>
-            <Table dataSource={dataSource} columns={columns} />
+                <Table dataSource={dataSource} columns={columns} />
             </div>
         </Modal>
     )
 }
 
-export default InventoryRemovalModalLog;
+export default InventoryAdditionModalLog;

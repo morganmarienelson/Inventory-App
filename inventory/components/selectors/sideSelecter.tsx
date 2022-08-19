@@ -1,8 +1,8 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import { Select } from 'antd';
-import styles from "./css/sideSelector.module.css"
-import {Sides} from "../enums/side";
+import styles from "../css/sideSelector.module.css"
+import {Sides} from "../../enums/side";
 
 interface SideSelectorProps{
     setSide: (side: string) => void

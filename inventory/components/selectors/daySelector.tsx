@@ -4,17 +4,18 @@ import {DatePicker} from 'antd';
 import styles from "../css/sideSelector.module.css"
 import moment from "moment";
 
-interface MonthSelectorProps{
+interface DaySelectorProps{
     onSelectedDate : ( date:moment.Moment, dateString: string) => void;
 }
 
-const MonthSelector:React.FC<MonthSelectorProps> = ({ onSelectedDate}) => {
+const DaySelector:React.FC<DaySelectorProps> = ({ onSelectedDate}) => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.label}>Search by Month: </div>
-            <DatePicker onChange={onSelectedDate} picker="month" />
+            <div className={styles.label}>Search by Date: </div>
+            <DatePicker onChange={onSelectedDate}  />
+
         </div>
     );
 }
-export default MonthSelector;
+export default DaySelector;

@@ -1,9 +1,21 @@
-
 .name {
     font-weight: 500;
     font-size: 30px;
     text-align: center;
     margin-top: 30px;
+}
+
+.liquorName {
+    font-weight: 500;
+    font-size: 25px;
+    text-align: center;
+    margin: 10px;
+}
+
+.liquorQuantity {
+    font-weight: 500;
+    font-size: 20px;
+    text-align: center;
 }
 
 .quantityContainer{
@@ -17,6 +29,23 @@
     font-size: 20px;
     margin-right: 20px;
 }
+
+.inventoryContainer{
+    display: flex;
+    justify-content: center;
+    margin: 5px;
+}
+
+.nameDate{
+    font-weight: 450;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.table{
+    margin-top: 10px;
+}
+
 
 .form {
     margin: auto;

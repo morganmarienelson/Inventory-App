@@ -5,7 +5,7 @@ const LoungeDrinkSchema = new Schema({
         type: String,
         required: true
     },
-    name: {
+    liquorName: {
         type: String,
         required: true,
         unique: true,

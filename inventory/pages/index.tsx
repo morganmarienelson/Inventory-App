@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { Sides } from "../enums/side";
 import {loungeDrinksInventory} from "../data/loungeDrinksInventory";
 import {pubDrinksInventory} from "../data/pubDrinksInventory";
-import EmployeeIndexSelector from "../components/selectors/employerIndexSelector";
+import EmployeeSelector from "../components/selectors/employeeSelector";
 import {PubDrinkNames} from "../data/pubDrinksNames";
 import {LoungeDrinkNames} from "../data/loungeDrinkNames";
 
@@ -40,8 +40,8 @@ export default function Index(
                     setTableData(loungeDrinksInventory);
                     LoungeDrinkNames.forEach(function (name) {
                         const liquorNameFilter = {
-                            text: `${name.name}`,
-                            value: `${name.name}`,
+                            text: `${name.liquorName}`,
+                            value: `${name.liquorName}`,
                         }
                         liqNameFilters.push(liquorNameFilter)
                     });
@@ -61,8 +61,8 @@ export default function Index(
                     setTableData(pubDrinksInventory);
                     PubDrinkNames.forEach(function (name) {
                         const liquorNameFilter = {
-                            text: `${name.name}`,
-                            value: `${name.name}`,
+                            text: `${name.liquorName}`,
+                            value: `${name.liquorName}`,
                         }
                         liqNameFilters.push(liquorNameFilter)
                     });
@@ -77,7 +77,7 @@ export default function Index(
    <>
        <div className={styles.header}>
            <div className={styles.selectors}>
-               <EmployeeIndexSelector setEmployee={setEmployee} setSelected={setEmployeeSelected}/>
+               <EmployeeSelector setEmployee={setEmployee} setSelected={setEmployeeSelected}/>
                <SideSelector setSide={setSide} setSelected={setSideSelected} setFetchTableData={setFetchTableData}/>
            </div>
            {sideSelected && employeeSelected ? (

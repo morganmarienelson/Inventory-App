@@ -1,10 +1,10 @@
 import {InputNumber, Modal, Form, Button, Select, message} from "antd";
 import React, { useState} from "react";
-import styles from "./css/modal.module.css";
-import {Sides} from "../enums/side";
-import {DrinkType} from "../types/drinkType";
-import {LiquorInventoryMessages} from "../enums/liquorInventoryMessages";
-import {UserActionMessages} from "../enums/userActionMessages";
+import styles from "../css/modal.module.css";
+import {Sides} from "../../enums/side";
+import {DrinkType} from "../../types/drinkType";
+import {LiquorInventoryMessages} from "../../enums/liquorInventoryMessages";
+import {UserActionMessages} from "../../enums/userActionMessages";
 
 interface InventoryAdditionModalProps{
     showModal: boolean;
@@ -75,7 +75,7 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
         const updatedLiquor = {
             _id: liquorId,
             vendor: record.vendor,
-            name: record.name,
+            liquorName: record.liquorName,
             quantity: quantityAfter,
         }
                 if (side == Sides.pubSide){
@@ -132,7 +132,7 @@ const InventoryAdditionModal: React.FC<InventoryAdditionModalProps> = ({showModa
 
     return (
         <Modal visible={showModal} onCancel={onModalOkCancel} onOk={onModalOkCancel} destroyOnClose={true}>
-            <div className={styles.name}>{record.name}</div>
+            <div className={styles.liquorName}>{record.liquorName}</div>
             <Form name="New Liquor" className={styles.form} onFinish={onFinish} validateMessages={validateMessages}>
             <div className={styles.quantityContainer}>
                 <div className={styles.quantityHeader}>

@@ -1,11 +1,11 @@
 import {InputNumber, Modal, Form, Button, Select, message} from "antd";
 import React, { useState} from "react";
 import emailjs from 'emailjs-com';
-import {DrinkType} from "../types/drinkType";
-import styles from "./css/modal.module.css";
-import {Sides} from "../enums/side";
-import {LiquorInventoryMessages} from "../enums/liquorInventoryMessages";
-import {UserActionMessages} from "../enums/userActionMessages";
+import {DrinkType} from "../../types/drinkType";
+import styles from "../css/modal.module.css";
+import {Sides} from "../../enums/side";
+import {LiquorInventoryMessages} from "../../enums/liquorInventoryMessages";
+import {UserActionMessages} from "../../enums/userActionMessages";
 
 interface InventoryRemovalModalProps {
     showModal: boolean;
@@ -25,7 +25,7 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
     //TODO: test email then call function in on finish
     const sendEmail = () => {
         // emailjs.send("service_ui2rj0j","template_m50q7pp",{
-        //     name: newRecord.name,
+        //     liquorName: newRecord.liquorName,
         //     quantity: newRecord.quantity,
         // }, "3yQIUtvE5NvXus_g4").then((result) => {
         //         console.log(result.text);
@@ -90,7 +90,7 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
         const updatedLiquor = {
             _id: liquorId,
             vendor: record.vendor,
-            name: record.name,
+            liquorName: record.name,
             quantity: quantityAfter,
         }
                 if (side == Sides.pubSide){
@@ -145,7 +145,7 @@ const InventoryRemovalModal: React.FC<InventoryRemovalModalProps> = ({showModal,
 
     return (
         <Modal visible={showModal} onCancel={onModalOkCancel} onOk={onModalOkCancel} destroyOnClose={true}>
-            <div className={styles.name}>{record.name}</div>
+            <div className={styles.liquorName}>{record.liquorName}</div>
             <Form name="New Liquor" className={styles.form} onFinish={onFinish} validateMessages={validateMessages}>
                 <div className={styles.quantityContainer}>
                     <div className={styles.quantityHeader}>

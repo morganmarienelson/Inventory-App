@@ -1,77 +1,77 @@
 export const PubDrinkNames = [
     {
-        name: '99 Proof Butterscotch ',
+        liquorName: '99 Proof Butterscotch ',
     },
     {
-        name: 'Foggy Mountain',
+        liquorName: 'Foggy Mountain',
     },
     {
-        name: 'Jack Daniels',
+        liquorName: 'Jack Daniels',
     },
     {
-        name: '99 Proof Root Beer',
+        liquorName: '99 Proof Root Beer',
     },
     {
-        name: 'E & J Brandy',
+        liquorName: 'E & J Brandy',
     },
     {
-        name: 'Jack Daniels Apple',
+        liquorName: 'Jack Daniels Apple',
     },
     {
-        name: 'Mr. Boston Creme De Cacao',
+        liquorName: 'Mr. Boston Creme De Cacao',
     },
     {
-        name: 'Ram\'s Point',
+        liquorName: 'Ram\'s Point',
     },
     {
-        name: 'Mr. Boston Creme De Menthe',
+        liquorName: 'Mr. Boston Creme De Menthe',
     },
     {
-        name: 'Remedy Bloody Mary Mix',
+        liquorName: 'Remedy Bloody Mary Mix',
     },
     {
-        name: 'Southern Comfort',
+        liquorName: 'Southern Comfort',
     },    {
-        name: 'Old Thompson',
+        liquorName: 'Old Thompson',
     },
 
     {
-        name: 'Golden B Moscato',
+        liquorName: 'Golden B Moscato',
     },
     {
-        name: 'Perseverance Lodi',
+        liquorName: 'Perseverance Lodi',
     },
     {
-        name: 'Sand Point Pinot Noir',
+        liquorName: 'Sand Point Pinot Noir',
     },
     {
-        name: 'Italico Pinot Girigio',
+        liquorName: 'Italico Pinot Girigio',
     },
     {
-        name: 'Sand Point Sauvignon Blanc',
+        liquorName: 'Sand Point Sauvignon Blanc',
     },
     {
-        name: 'Perseverance Chardonnay',
+        liquorName: 'Perseverance Chardonnay',
     },
     {
-        name: 'Silver Creek Cab',
+        liquorName: 'Silver Creek Cab',
     },
     {
-        name: 'Baileys',
+        liquorName: 'Baileys',
     },
     {
-        name: 'Casamigos',
+        liquorName: 'Casamigos',
     },
     {
-        name: 'Bicardi Limon',
+        liquorName: 'Bicardi Limon',
     },    {
-        name: 'Crown Royal',
+        liquorName: 'Crown Royal',
     },
     {
-        name: 'Captain Morgan',
+        liquorName: 'Captain Morgan',
     },    {
-        name: 'Jameson',
+        liquorName: 'Jameson',
     },    {
-        name: 'Jim Beam',
+        liquorName: 'Jim Beam',
     },
     ]

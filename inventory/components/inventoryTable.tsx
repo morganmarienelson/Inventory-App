@@ -24,7 +24,7 @@ const [showRemoveModal, setShowRemoveModal] = useState(false);
 const [editingRecord, setEditingRecord ] = useState({
     _id: '',
     vendor: '',
-    name: '',
+    liquorName: '',
     quantity: 0,
 })
 
@@ -50,7 +50,7 @@ const add = (record: DrinkType) => {
             employee: employee,
             productId: id,
             vendor: editingRecord.vendor,
-            liquorName: editingRecord.name,
+            liquorName: editingRecord.liquorName,
             quantity: editingRecord.quantity,
             date: date,
             side: side,
@@ -144,7 +144,7 @@ const add = (record: DrinkType) => {
         },
         {
             title: 'Liquor Name',
-            dataIndex: 'name',
+            dataIndex: 'liquorName',
             filters: liqNameFilters,
             onFilter: (value, record) => record.name.includes(value),
             filterSearch: true,

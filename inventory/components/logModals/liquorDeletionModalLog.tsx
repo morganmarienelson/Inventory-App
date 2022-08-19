@@ -1,7 +1,7 @@
 import {Modal} from "antd";
 import React from "react";
-import styles from "./css/modal.module.css";
-import {LiquorDeletionLogType} from "../types/liquorDeletionLogType";
+import styles from "../css/modal.module.css";
+import {LiquorDeletionLogType} from "../../types/liquorDeletionLogType";
 
 interface LiquorDeletionModalLogProps{
     showModal: boolean;
@@ -17,16 +17,15 @@ const LiquorDeletionModalLog: React.FC<LiquorDeletionModalLogProps> = ({showModa
 
     return (
         <Modal visible={showModal} onCancel={onModalOkCancel} onOk={onModalOkCancel} destroyOnClose={true}>
-            <div className={styles.name}>Liquor Deletion By: {record.employeeName} on {record.date}</div>
-            <div className={styles.quantityContainer}>
-                <div className={styles.quantityHeader}>
-                    Liquor: {record.liquorName} from {record.vendor}
+            <div className={styles.name}>Liquor Deletion </div>
+            <div className={styles.liquorName}>{record.liquorName} </div>
+            <div className={styles.inventoryContainer}>
+                <div className={styles.nameDate}>
+                    By: {record.employeeName} on {record.date}
                 </div>
             </div>
-            <div className={styles.quantityContainer}>
-                <div className={styles.quantityHeader}>
-                    Number of Units At Deletion: {record.quantityAtDelete}
-                </div>
+            <div className={styles.liquorQuantity}>
+                Quantity at Deletion: {record.quantityAtDelete}
             </div>
         </Modal>
     )

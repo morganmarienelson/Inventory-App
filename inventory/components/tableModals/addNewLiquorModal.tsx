@@ -1,10 +1,10 @@
 import {Button, Form, Input, InputNumber, message, Modal, Select} from "antd";
 import React, {useState} from "react";
-import styles from "./css/modal.module.css"
-import {Vendors} from "../enums/vendors";
-import { Sides } from "../enums/side";
-import {UserActionMessages} from "../enums/userActionMessages";
-import {LiquorInventoryMessages} from "../enums/liquorInventoryMessages";
+import styles from "../css/modal.module.css"
+import {Vendors} from "../../enums/vendors";
+import { Sides } from "../../enums/side";
+import {UserActionMessages} from "../../enums/userActionMessages";
+import {LiquorInventoryMessages} from "../../enums/liquorInventoryMessages";
 
 
 interface AddNewLiquorModalProps{
@@ -34,7 +34,7 @@ const AddNewLiquorModal: React.FC<AddNewLiquorModalProps> = ({showAddModal, setS
         const liquorAddition = {
             employee: employee,
             vendor: values.vendor,
-            name: values.name,
+            liquorName: values.name,
             quantity: values.quantity,
             date: date,
             side: side,

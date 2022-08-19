@@ -1,14 +1,14 @@
 export const VendorNames = [
     {
-        name: "General Beverage",
+        liquorName: "General Beverage",
     },
     {
-        name: "Triangle Distributing",
+        liquorName: "Triangle Distributing",
     },
     {
-        name: "Break Thru",
+        liquorName: "Break Thru",
     },
     {
-        name:  "Badger Liquor",
+        liquorName:  "Badger Liquor",
     },
 ]
