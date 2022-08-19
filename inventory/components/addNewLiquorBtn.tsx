@@ -1,6 +1,6 @@
 import {Button} from "antd";
 import React, {useState} from "react";
-import AddNewLiquorModal from "./addNewLiquorModal";
+import AddNewLiquorModal from "./tableModals/addNewLiquorModal";
 import styles from "./css/addBtn.module.css";
 
 interface AddNewLiquorBtnProps{

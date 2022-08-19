@@ -3,8 +3,8 @@ import React, { useState} from "react";
 import { Space, Table, Typography, Popconfirm, message} from 'antd';
 import {DrinkType} from "../types/drinkType";
 import {Vendors } from "../enums/vendors";
-import InventoryAdditionModal from "./inventoryAdditionModal";
-import InventoryRemovalModal from "./inventoryRemovalModal";
+import InventoryAdditionModal from "./tableModals/inventoryAdditionModal";
+import InventoryRemovalModal from "./tableModals/inventoryRemovalModal";
 import { Sides } from '../enums/side';
 import {UserActionMessages} from "../enums/userActionMessages";
 import {LiquorInventoryMessages} from "../enums/liquorInventoryMessages";
@@ -13,11 +13,12 @@ interface InventoryTableProps{
     data: Array<DrinkType>;
     side: string;
     setFetchTableData : (fetchTableData: boolean) => void;
-    employee: string
+    employee: string;
+    liqNameFilters: any;
 }
 
 
-const InventoryTable:React.FC<InventoryTableProps> = ({data,  side, setFetchTableData, employee}) => {
+const InventoryTable:React.FC<InventoryTableProps> = ({data, liqNameFilters, side, setFetchTableData, employee}) => {
 const [showAddModal, setShowAddModal] = useState(false);
 const [showRemoveModal, setShowRemoveModal] = useState(false);
 const [editingRecord, setEditingRecord ] = useState({
@@ -142,9 +143,11 @@ const add = (record: DrinkType) => {
             filterSearch: true,
         },
         {
-            title: 'Name',
+            title: 'Liquor Name',
             dataIndex: 'name',
-            width: '25%',
+            filters: liqNameFilters,
+            onFilter: (value, record) => record.name.includes(value),
+            filterSearch: true,
         },
         {
             title: 'Quantity',

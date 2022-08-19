@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import { Space, Table, Typography} from "antd";
+import {Popconfirm, Space, Table, Typography} from "antd";
 import {Vendors} from "../enums/vendors";
 import {Actions} from "../enums/userActions";
 import {InventoryLogData} from "../data/inventoryLogData";
@@ -7,23 +7,25 @@ import styles from "../styles/Home.module.css"
 import moment from "moment";
 import { EmployeeNames} from "../data/employeeNames";
 import {PubDrinkNames} from "../data/pubDrinksNames";
-import SideSelector from "../components/sideSelecter";
-import MonthSelecter from "../components/monthSelecter";
-import InventoryAdditionModalLog from "../components/inventoryAdditionModaLogl";
+import SideSelector from "../components/selectors/sideSelecter";
+import MonthSelecter from "../components/selectors/monthSelecter";
+import InventoryAdditionModalLog from "../components/logModals/inventoryAdditionModaLogl";
 import {EmployeeInventoryAdditionLog} from "../data/employeeInventoryAdditionLog";
 import {InventoryAdditionLogType} from "../types/inventoryAdditionLogType";
 import {EmployeeInventoryRemovalLog} from "../data/employeeInventoryRemovalLog";
 import {InventoryRemovalLogType} from "../types/inventoryRemovalLogType";
-import InventoryRemovalModalLog from "../components/inventoryRemovalModalLog";
+import InventoryRemovalModalLog from "../components/logModals/inventoryRemovalModalLog";
 import {LiquorAdditionLogType} from "../types/liquorAdditionLogType";
 import {LiquorDeletionLogType} from "../types/liquorDeletionLogType";
 import {EmployeeLiquorAdditionLog} from "../data/employeeLiquorAdditionLog";
 import {EmployeeLiquorDeletionLog} from "../data/employeeLiquorDeletionLog";
-import LiquorDeletionModalLog from "../components/liquorDeletionModalLog";
-import LiquorAdditionModalLog from "../components/liquorAdditonModalLog";
+import LiquorDeletionModalLog from "../components/logModals/liquorDeletionModalLog";
+import LiquorAdditionModalLog from "../components/logModals/liquorAdditonModalLog";
 import {PubSideUserLog} from "../data/pubSideUserLog";
 import {LoungeSideUserLog} from "../data/loungeSideUserLog";
 import {Sides} from "../enums/side";
+import DaySelector from "../components/daySelector";
+import {LoungeDrinkNames} from "../data/loungeDrinkNames";
 
 const Log = () => {
     const [showInventoryTable, setShowInventoryTable ] = useState(false);
@@ -33,7 +35,6 @@ const Log = () => {
     const [showLiquorAddition, setShowLiquorAddition ] = useState(false);
     const [empNameFilters, setEmpNameFilters ] = useState([]);
     const [liqNameFilters, setLiqNameFilters ] = useState([]);
-    const [fetchFilters, setFetchFilters ] = useState(false);
     const [side, setSide ] = useState('');
     const [sideSelected, setSideSelected] = useState(false);
     const [viewAdditionRecord, setViewAdditionRecord] = useState({} as InventoryAdditionLogType )
@@ -52,14 +53,24 @@ const Log = () => {
                     }
                     empNameFilters.push(empNameFilter);
                 });
-                PubDrinkNames.forEach(function (name) {
-                    const liquorNameFilter = {
-                        text: `${name.name}`,
-                        value: `${name.name}`,
-                    }
-                    liqNameFilters.push(liquorNameFilter)
-                });
-                setFetchFilters(false);
+                if (side == Sides.pubSide){
+                    PubDrinkNames.forEach(function (name) {
+                        const liquorNameFilter = {
+                            text: `${name.name}`,
+                            value: `${name.name}`,
+                        }
+                        liqNameFilters.push(liquorNameFilter)
+                    });
+                } else if  (side == Sides.loungeSide){
+                    LoungeDrinkNames.forEach(function (name) {
+                        const liquorNameFilter = {
+                            text: `${name.name}`,
+                            value: `${name.name}`,
+                        }
+                        liqNameFilters.push(liquorNameFilter)
+                    });
+                }
+
             }
         }
         setFilters();
@@ -208,6 +219,19 @@ const Log = () => {
                             <Typography.Link onClick={() => view(record)}>
                                 View Details
                             </Typography.Link>
+                            <Typography.Link
+                                // onClick={() => prepareDelete(record)}
+                            >
+                                <Popconfirm
+                                    title="Are you sure to delete this employee log?"
+                                    // onConfirm={deleteLiquor}
+                                    // onCancel={onCancelDelete}
+                                    okText="Yes"
+                                    cancelText="No"
+                                >
+                                    <a href="#">Delete</a>
+                                </Popconfirm>
+                            </Typography.Link>
                         </Space>
                     </>
                 )
@@ -221,10 +245,11 @@ const Log = () => {
                 <div className={styles.selectors}>
                     <SideSelector setSide={setSide} setSelected={setSideSelected} setFetchTableData={setShowInventoryTable}/>
                     <MonthSelecter setTableData={setTableData} side={side}/>
+                    <DaySelector setTableData={setTableData} side={side}/>
                 </div>
             </div>
             {showInventoryTable ? (
-                <div>
+                <div className={styles.table}>
                     <Table columns={columns} dataSource={tableData} />
                 </div>
             ) : (
