@@ -146,7 +146,7 @@ const add = (record: DrinkType) => {
             title: 'Liquor Name',
             dataIndex: 'liquorName',
             filters: liqNameFilters,
-            onFilter: (value, record) => record.name.includes(value),
+            onFilter: (value, record) => record.liquorName.includes(value),
             filterSearch: true,
         },
         {
